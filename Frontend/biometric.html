@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biometric Identification | Intelligent Biometric Healthcare System</title>
+
+    ```
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #333;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #172033;
+            color: white;
+            padding-top: 20px;
+        }
+
+        .logo {
+            text-align: center;
+            padding: 15px;
+            border-bottom: 1px solid #303b50;
+            margin-bottom: 15px;
+        }
+
+        .logo h2 {
+            font-size: 19px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: #aeb7c7;
+            margin-top: 5px;
+        }
+
+        .menu a {
+            display: block;
+            color: #dce2ec;
+            text-decoration: none;
+            padding: 14px 25px;
+            font-size: 14px;
+        }
+
+        .menu a:hover {
+            background: #26344d;
+        }
+
+        .menu a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 70px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .topbar h1 {
+            font-size: 22px;
+            color: #172033;
+        }
+
+        .admin {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h2 {
+            color: #172033;
+            font-size: 25px;
+            margin-bottom: 7px;
+        }
+
+        .page-title p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .biometric-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h3 {
+            color: #172033;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .scan-area {
+            margin-top: 25px;
+            border: 2px dashed #ccd2da;
+            border-radius: 10px;
+            padding: 45px 20px;
+            text-align: center;
+        }
+
+        .scan-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .scan-area h4 {
+            color: #172033;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .scan-area p {
+            margin-bottom: 20px;
+        }
+
+        button {
+            border: none;
+            padding: 12px 22px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .scan-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .scan-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .search-box {
+            margin-top: 25px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd2da;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: #2563eb;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result strong {
+            color: #172033;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #dcfce7;
+            color: #15803d;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .features {
+            margin-top: 25px;
+        }
+
+        .feature {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .feature:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 900px) {
+            .biometric-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    ```
+
+</head>
+
+<body>
+
+    ```
+    <div class="sidebar">
+
+        <div class="logo">
+            <h2>Biometric Healthcare</h2>
+            <p>Intelligent Healthcare System</p>
+        </div>
+
+        <div class="menu">
+
+            <a href="dashboard.html">Dashboard</a>
+
+            <a href="patients.html">Patients</a>
+
+            <a href="patient_registration.html">Patient Registration</a>
+
+            <a href="biometric.html" class="active">Biometric Identification</a>
+
+            <a href="medical_records.html">Medical Records</a>
+
+            <a href="appointments.html">Appointments</a>
+
+            <a href="ai_prediction.html">AI Risk Prediction</a>
+
+            <a href="reports.html">Reports</a>
+
+            <a href="users.html">Users</a>
+
+            <a href="settings.html">Settings</a>
+
+        </div>
+    </div>
+
+    <div class="main">
+
+        <div class="topbar">
+            <h1>Biometric Identification</h1>
+
+            <div class="admin">
+                Administrator
+            </div>
+        </div>
+
+        <div class="content">
+
+            <div class="page-title">
+
+                <h2>Patient Biometric Identification</h2>
+
+                <p>
+                    Identify registered patients using biometric information.
+                </p>
+
+            </div>
+
+            <div class="biometric-grid">
+
+                <div class="card">
+
+                    <h3>Biometric Scanner</h3>
+
+                    <p>
+                        Start a biometric identification process to locate
+                        the patient's healthcare record.
+                    </p>
+
+                    <div class="scan-area">
+
+                        <div class="scan-icon">🖐️</div>
+
+                        <h4>Ready for Identification</h4>
+
+                        <p>
+                            Place the patient's biometric information
+                            on the supported scanner.
+                        </p>
+
+                        <button class="scan-btn" onclick="startScan()">
+                            Start Identification
+                        </button>
+
+                    </div>
+
+                    <div class="result" id="scanResult">
+
+                        <strong>Identification Result</strong>
+
+                        <p id="resultText">
+                            Processing biometric information...
+                        </p>
+
+                        <span class="status">
+                            System Ready
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <h3>Patient Search</h3>
+
+                    <p>
+                        Search for a patient using their biometric ID.
+                    </p>
+
+                    <div class="search-box">
+
+                        <input type="text" id="biometricId" placeholder="Enter Biometric ID">
+
+                    </div>
+
+                    <button class="scan-btn" style="margin-top:15px;" onclick="searchBiometric()">
+
+                        Search Patient
+
+                    </button>
+
+                    <div class="result" id="searchResult">
+
+                        <strong>Patient Record</strong>
+
+                        <p id="patientResult">
+                            No search performed.
+                        </p>
+
+                    </div>
+
+                    <div class="features">
+
+                        <div class="feature">
+                            ✓ Fast patient identification
+                        </div>
+
+                        <div class="feature">
+                            ✓ Secure biometric verification
+                        </div>
+
+                        <div class="feature">
+                            ✓ Healthcare record matching
+                        </div>
+
+                        <div class="feature">
+                            ✓ AI-ready biometric architecture
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        function startScan() {
+
+            document.getElementById("scanResult").style.display = "block";
+
+            document.getElementById("resultText").innerText =
+                "Biometric scanner interface is ready. Actual biometric hardware integration will be connected later.";
+
+        }
+
+        function searchBiometric() {
+
+            let id = document.getElementById("biometricId").value;
+
+            document.getElementById("searchResult").style.display = "block";
+
+            if (id.trim() === "") {
+
+                document.getElementById("patientResult").innerText =
+                    "Please enter a biometric ID.";
+
+            } else {
+
+                document.getElementById("patientResult").innerText =
+                    "Searching for biometric ID: " + id;
+
+            }
+
+        }
+
+    </script>
+    ```
+
+</body>
+
+</html>

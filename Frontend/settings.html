@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings | Intelligent Biometric Healthcare System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #333;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #172033;
+            color: white;
+            padding-top: 20px;
+        }
+
+        .logo {
+            text-align: center;
+            padding: 15px;
+            border-bottom: 1px solid #303b50;
+            margin-bottom: 15px;
+        }
+
+        .logo h2 {
+            font-size: 19px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: #aeb7c7;
+            margin-top: 5px;
+        }
+
+        .menu a {
+            display: block;
+            color: #dce2ec;
+            text-decoration: none;
+            padding: 14px 25px;
+            font-size: 14px;
+        }
+
+        .menu a:hover {
+            background: #26344d;
+        }
+
+        .menu a.active {
+            background: #2563eb;
+        }
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 70px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+        }
+
+        .topbar h1 {
+            font-size: 22px;
+            color: #172033;
+        }
+
+        .admin {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h2 {
+            color: #172033;
+            font-size: 25px;
+            margin-bottom: 7px;
+        }
+
+        .page-title p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, .08);
+            margin-bottom: 20px;
+            max-width: 900px;
+        }
+
+        .card h3 {
+            color: #172033;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd2da;
+            border-radius: 6px;
+        }
+
+        button {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .option:last-child {
+            border-bottom: none;
+        }
+
+        .option p {
+            font-size: 13px;
+            color: #777;
+            margin-top: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <div class="logo">
+
+            <h2>Biometric Healthcare</h2>
+
+            <p>Intelligent Healthcare System</p>
+
+        </div>
+
+        <div class="menu">
+
+            <a href="dashboard.html">Dashboard</a> <a href="patients.html">Patients</a> <a
+                href="patient_registration.html">Patient Registration</a> <a href="biometric.html">Biometric
+                Identification</a> <a href="medical_records.html">Medical Records</a> <a
+                href="appointments.html">Appointments</a> <a href="ai_prediction.html">AI Risk Prediction</a> <a
+                href="reports.html">Reports</a> <a href="users.html">Users</a> <a href="settings.html"
+                class="active">Settings</a>
+
+        </div>
+
+    </div>
+
+    <div class="main">
+
+        <div class="topbar">
+
+            <h1>Settings</h1>
+
+            <div class="admin">
+                Administrator
+            </div>
+
+        </div>
+
+        <div class="content">
+
+            <div class="page-title">
+
+                <h2>System Settings</h2>
+
+                <p>
+                    Configure basic healthcare system preferences.
+                </p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>General Settings</h3>
+
+                <div class="form-group">
+
+                    <label>System Name</label>
+
+                    <input type="text" value="Intelligent Biometric Healthcare System">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Healthcare Facility</label>
+
+                    <input type="text" placeholder="Enter facility name">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>Default Language</label>
+
+                    <select>
+
+                        <option>English</option>
+                        <option>Swahili</option>
+
+                    </select>
+
+                </div>
+
+                <button onclick="saveSettings()">
+                    Save Settings
+                </button>
+
+            </div>
+
+            <div class="card">
+
+                <h3>System Preferences</h3>
+
+                <div class="option">
+
+                    <div>
+
+                        <strong>Biometric Identification</strong>
+
+                        <p>Enable biometric identification services.</p>
+
+                    </div>
+
+                    <input type="checkbox" checked>
+
+                </div>
+
+                <div class="option">
+
+                    <div>
+
+                        <strong>AI Risk Prediction</strong>
+
+                        <p>Enable AI-assisted risk assessment.</p>
+
+                    </div>
+
+                    <input type="checkbox" checked>
+
+                </div>
+
+                <div class="option">
+
+                    <div>
+
+                        <strong>Notifications</strong>
+
+                        <p>Enable system notifications.</p>
+
+                    </div>
+
+                    <input type="checkbox" checked>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        function saveSettings() {
+
+            alert("Settings interface is working. Database configuration will be connected later.");
+
+        }
+
+    </script>
+
+</body>
+
+</html>

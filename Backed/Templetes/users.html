@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Management | Intelligent Healthcare System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #263238
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #123c69;
+            color: white;
+            padding: 25px 15px
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 30px
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 13px 15px;
+            border-radius: 8px;
+            margin-bottom: 6px
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #1769aa
+        }
+
+        .main {
+            margin-left: 240px;
+            padding: 25px
+        }
+
+        .topbar {
+            background: white;
+            padding: 18px 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between
+        }
+
+        .welcome {
+            background: linear-gradient(135deg, #1769aa, #123c69);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px
+        }
+
+        .stat {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px #00000012
+        }
+
+        .stat h3 {
+            font-size: 14px;
+            color: #777
+        }
+
+        .stat p {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 8px
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px #00000012
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px
+        }
+
+        input,
+        select {
+            padding: 11px;
+            border: 1px solid #ddd;
+            border-radius: 7px
+        }
+
+        #userSearch {
+            flex: 1
+        }
+
+        button {
+            border: 0;
+            padding: 11px 18px;
+            border-radius: 7px;
+            cursor: pointer
+        }
+
+        .add-btn {
+            background: #1769aa;
+            color: white
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        th,
+        td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #eee
+        }
+
+        th {
+            background: #f5f7fa
+        }
+
+        .badge {
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 12px
+        }
+
+        .active-badge {
+            background: #d9f7e5;
+            color: #168044
+        }
+
+        .inactive-badge {
+            background: #ffe0e0;
+            color: #b42318
+        }
+
+        .action {
+            background: #eef5ff;
+            color: #1769aa;
+            margin-right: 5px
+        }
+
+        .activate {
+            background: #e4f8e9;
+            color: #168044
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: #0008
+        }
+
+        .modal-content {
+            background: white;
+            width: 450px;
+            margin: 7% auto;
+            padding: 25px;
+            border-radius: 12px
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px
+        }
+
+        .form-group {
+            margin-bottom: 15px
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%
+        }
+
+        .modal-actions {
+            text-align: right;
+            margin-top: 20px
+        }
+
+        .save {
+            background: #1769aa;
+            color: white
+        }
+
+        .cancel {
+            background: #ddd
+        }
+
+        .message {
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 7px;
+            display: none
+        }
+
+        .success {
+            background: #d9f7e5;
+            color: #168044
+        }
+
+        .error {
+            background: #ffe0e0;
+            color: #b42318
+        }
+
+        @media(max-width:900px) {
+            .sidebar {
+                width: 190px
+            }
+
+            .main {
+                margin-left: 190px
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <h2>BioHealth AI</h2>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="patients.html">Patients</a>
+        <a href="biometric.html">Biometric</a>
+        <a href="medical_records.html">Medical Records</a>
+        <a href="appointments.html">Appointments</a>
+        <a href="ai_prediction.html">AI Prediction</a>
+        <a href="reports.html">Reports</a>
+        <a href="users.html" class="active">Users</a>
+        <a href="settings.html">Settings</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+    <div class="main">
+
+        <div class="topbar">
+            <strong>Users Management</strong>
+            <span>Administrator</span>
+        </div>
+
+        <div class="welcome">
+            <h2>System Users & Access Control</h2>
+            <p>Manage registered system users and their access roles.</p>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <div class="stats">
+            <div class="stat">
+                <h3>Total Users</h3>
+                <p id="totalUsers">0</p>
+            </div>
+
+            <div class="stat">
+                <h3>Active Users</h3>
+                <p id="activeUsers">0</p>
+            </div>
+
+            <div class="stat">
+                <h3>Administrators</h3>
+                <p id="adminUsers">0</p>
+            </div>
+
+            <div class="stat">
+                <h3>Online Now</h3>
+                <p id="onlineUsers">0</p>
+            </div>
+        </div>
+
+        <div class="card">
+
+            <div class="toolbar">
+                <input type="text" id="userSearch" placeholder="Search users..." onkeyup="filterUsers()">
+
+                <select id="roleFilter" onchange="filterUsers()">
+                    <option value="">All Roles</option>
+                    <option value="Administrator">Administrator</option>
+                    <option value="Doctor">Doctor</option>
+                    <option value="Nurse">Nurse</option>
+                    <option value="Receptionist">Receptionist</option>
+                    <option value="Laboratory Staff">Laboratory Staff</option>
+                </select>
+
+                <button class="add-btn" onclick="openModal()">+ Add New User</button>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="usersTable">
+                    <tr>
+                        <td colspan="5" style="text-align:center">Loading users...</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="card">
+            <h3>Access & Security Overview</h3>
+            <br>
+            <p>✓ User authentication enabled</p>
+            <p>✓ Role-based access control available</p>
+            <p>✓ Password protection enabled</p>
+            <p>✓ Database user records connected</p>
+        </div>
+
+    </div>
+
+    <!-- ADD USER MODAL -->
+    <div id="userModal" class="modal">
+
+        <div class="modal-content">
+
+            <h2>Add New User</h2>
+
+            <form onsubmit="saveUser(event)">
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="fullName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" required>
+                </div>
+
+                <div class="form-group">
+                    <label>User Role</label>
+                    <select id="newRole" required>
+                        <option value="">Select Role</option>
+                        <option value="Administrator">Administrator</option>
+                        <option value="Doctor">Doctor</option>
+                        <option value="Nurse">Nurse</option>
+                        <option value="Receptionist">Receptionist</option>
+                        <option value="Laboratory Staff">Laboratory Staff</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="cancel" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="save">Save User</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+
+        let allUsers = [];
+
+        async function loadUsers() {
+
+            try {
+
+                const response = await fetch('/get-users');
+
+                const data = await response.json();
+
+                if (data.status !== 'success') {
+                    throw new Error(data.message || 'Unable to load users');
+                }
+
+                allUsers = data.users || [];
+
+                displayUsers(allUsers);
+
+                document.getElementById('totalUsers').textContent = allUsers.length;
+
+                document.getElementById('activeUsers').textContent =
+                    allUsers.length;
+
+                document.getElementById('adminUsers').textContent =
+                    allUsers.filter(u => u.Role === 'Administrator').length;
+
+                document.getElementById('onlineUsers').textContent = '0';
+
+            } catch (error) {
+
+                document.getElementById('usersTable').innerHTML =
+                    '<tr><td colspan="5" style="text-align:center;color:red">Unable to load users</td></tr>';
+
+                showMessage(error.message, 'error');
+            }
+        }
+
+        function displayUsers(users) {
+
+            const table = document.getElementById('usersTable');
+
+            if (users.length === 0) {
+
+                table.innerHTML =
+                    '<tr><td colspan="5" style="text-align:center">No users found</td></tr>';
+
+                return;
+            }
+
+            table.innerHTML = users.map(user => `
+
+        <tr
+            data-role="${user.Role || ''}"
+            data-name="${user.Full_name || ''}"
+            data-username="${user.Username || ''}"
+            data-email="${user.Email || ''}"
+        >
+
+            <td>${escapeHtml(user.Full_name)}</td>
+
+            <td>${escapeHtml(user.Username)}</td>
+
+            <td>${escapeHtml(user.Email)}</td>
+
+            <td>
+                <span class="badge active-badge">
+                    ${escapeHtml(user.Role)}
+                </span>
+            </td>
+
+            <td>
+
+                <button class="action"
+                    onclick="viewUser('${escapeJs(user.Full_name)}')">
+                    View
+                </button>
+
+                <button class="action"
+                    onclick="editUser('${escapeJs(user.Username)}')">
+                    Edit
+                </button>
+
+            </td>
+
+        </tr>
+
+    `).join('');
+        }
+
+        function filterUsers() {
+
+            const search =
+                document.getElementById('userSearch').value.toLowerCase();
+
+            const role =
+                document.getElementById('roleFilter').value;
+
+            const filtered = allUsers.filter(user => {
+
+                const matchesSearch =
+                    (user.Full_name || '').toLowerCase().includes(search) ||
+                    (user.Username || '').toLowerCase().includes(search) ||
+                    (user.Email || '').toLowerCase().includes(search);
+
+                const matchesRole =
+                    !role || user.Role === role;
+
+                return matchesSearch && matchesRole;
+
+            });
+
+            displayUsers(filtered);
+        }
+
+        function openModal() {
+            document.getElementById('userModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('userModal').style.display = 'none';
+        }
+
+        async function saveUser(event) {
+
+            event.preventDefault();
+
+            const userData = {
+
+                full_name: document.getElementById('fullName').value,
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                role: document.getElementById('newRole').value
+
+            };
+
+            try {
+
+                const response = await fetch('/create-user', {
+
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+
+                    body: JSON.stringify(userData)
+
+                });
+
+                const data = await response.json();
+
+                if (data.status !== 'success') {
+                    throw new Error(data.message || 'User creation failed');
+                }
+
+                closeModal();
+
+                document.querySelector('form').reset();
+
+                showMessage('User created successfully.', 'success');
+
+                loadUsers();
+
+            } catch (error) {
+
+                showMessage(error.message, 'error');
+
+            }
+        }
+
+        function viewUser(name) {
+
+            const user = allUsers.find(u => u.Full_name === name);
+
+            if (!user) return;
+
+            alert(
+                'USER DETAILS\n\n' +
+                'Full Name: ' + user.Full_name + '\n' +
+                'Username: ' + user.Username + '\n' +
+                'Email: ' + user.Email + '\n' +
+                'Role: ' + user.Role
+            );
+        }
+
+        function editUser(username) {
+
+            const user = allUsers.find(u => u.Username === username);
+
+            if (!user) return;
+
+            alert(
+                'Edit User\n\n' +
+                'User: ' + user.Full_name + '\n\n' +
+                'User editing will be connected after the database update endpoint is added.'
+            );
+        }
+
+        function showMessage(message, type) {
+
+            const box = document.getElementById('message');
+
+            box.textContent = message;
+
+            box.className = 'message ' + type;
+
+            box.style.display = 'block';
+
+            setTimeout(() => {
+                box.style.display = 'none';
+            }, 4000);
+        }
+
+        function escapeHtml(value) {
+
+            if (value === null || value === undefined) return '';
+
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function escapeJs(value) {
+
+            if (value === null || value === undefined) return '';
+
+            return String(value)
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, "\\'");
+        }
+
+        window.onclick = function (event) {
+
+            const modal = document.getElementById('userModal');
+
+            if (event.target === modal) {
+                closeModal();
+            }
+
+        }
+
+        loadUsers();
+
+    </script>
+
+</body>
+
+</html>

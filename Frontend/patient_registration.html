@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Registration - Intelligent Biometric Healthcare System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #102a43;
+            color: white;
+            padding-top: 20px;
+            overflow-y: auto;
+        }
+
+        .logo {
+            text-align: center;
+            padding: 15px 10px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .logo h2 {
+            font-size: 19px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: #c9d6e4;
+        }
+
+        .menu {
+            margin-top: 15px;
+        }
+
+        .menu a {
+            display: block;
+            color: #dce6f0;
+            text-decoration: none;
+            padding: 14px 22px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .menu a:hover {
+            background: #1d4d73;
+            color: white;
+        }
+
+        .menu a.active {
+            background: #1d6fa5;
+            color: white;
+            border-left: 4px solid white;
+        }
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 70px;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .topbar h1 {
+            font-size: 22px;
+            color: #102a43;
+        }
+
+        .admin {
+            font-size: 14px;
+            color: #52606d;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h2 {
+            color: #102a43;
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+        .page-title p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+            max-width: 1000px;
+        }
+
+        .section-title {
+            color: #102a43;
+            font-size: 18px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #1d6fa5;
+            box-shadow: 0 0 0 2px rgba(29, 111, 165, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+        .biometric-box {
+            background: #f0f7fc;
+            border: 1px solid #c9dfef;
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 25px;
+        }
+
+        .biometric-box h3 {
+            color: #102a43;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .biometric-box p {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .biometric-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .biometric-input input {
+            flex: 1;
+        }
+
+        .generate-btn {
+            border: none;
+            background: #1d6fa5;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .generate-btn:hover {
+            background: #155a86;
+        }
+
+        .button-area {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .btn {
+            padding: 12px 22px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .btn-cancel {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-cancel:hover {
+            background: #d1d5db;
+        }
+
+        .btn-save {
+            background: #1d6fa5;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #155a86;
+        }
+
+        .success-message {
+            display: none;
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+            padding: 14px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .topbar {
+                padding: 0 15px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .biometric-input {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+        <div class="logo">
+            <h2>Biometric Healthcare</h2>
+            <p>Intelligent Healthcare System</p>
+        </div>
+
+        <div class="menu">
+
+            <a href="dashboard.html">Dashboard</a>
+
+            <a href="patients.html">Patients</a>
+
+            <a href="patient_registration.html" class="active">
+                Patient Registration
+            </a>
+
+            <a href="biometric.html">Biometric Identification</a>
+
+            <a href="medical_records.html">Medical Records</a>
+
+            <a href="appointments.html">Appointments</a>
+
+            <a href="ai_prediction.html">AI Risk Prediction</a>
+
+            <a href="reports.html">Reports</a>
+
+            <a href="users.html">Users</a>
+
+            <a href="settings.html">Settings</a>
+
+        </div>
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+        <div class="topbar">
+            <h1>Patient Registration</h1>
+
+            <div class="admin">
+                System Administrator
+            </div>
+        </div>
+
+
+        <div class="content">
+
+            <div class="page-title">
+                <h2>Register New Patient</h2>
+                <p>Enter the patient's information to create a new healthcare record.</p>
+            </div>
+
+
+            <div class="form-container">
+
+                <div id="successMessage" class="success-message">
+                    Patient registration information has been captured successfully.
+                </div>
+
+
+                <form id="patientForm">
+
+                    <h3 class="section-title">
+                        Patient Information
+                    </h3>
+
+
+                    <div class="form-grid">
+
+                        <!-- PATIENT NUMBER -->
+                        <div class="form-group">
+
+                            <label for="patient_number">
+                                Patient Number <span class="required">*</span>
+                            </label>
+
+                            <input type="text" id="patient_number" name="patient_number" placeholder="e.g. PAT-0001"
+                                required>
+
+                        </div>
+
+
+                        <!-- FULL NAME -->
+                        <div class="form-group">
+
+                            <label for="full_name">
+                                Full Name <span class="required">*</span>
+                            </label>
+
+                            <input type="text" id="full_name" name="full_name" placeholder="Enter patient's full name"
+                                required>
+
+                        </div>
+
+
+                        <!-- DATE OF BIRTH -->
+                        <div class="form-group">
+
+                            <label for="date_of_birth">
+                                Date of Birth <span class="required">*</span>
+                            </label>
+
+                            <input type="date" id="date_of_birth" name="date_of_birth" required>
+
+                        </div>
+
+
+                        <!-- GENDER -->
+                        <div class="form-group">
+
+                            <label for="gender">
+                                Gender <span class="required">*</span>
+                            </label>
+
+                            <select id="gender" name="gender" required>
+
+                                <option value="">
+                                    Select Gender
+                                </option>
+
+                                <option value="Male">
+                                    Male
+                                </option>
+
+                                <option value="Female">
+                                    Female
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- PHONE -->
+                        <div class="form-group">
+
+                            <label for="phone">
+                                Phone Number <span class="required">*</span>
+                            </label>
+
+                            <input type="tel" id="phone" name="phone" placeholder="e.g. 0712345678" required>
+
+                        </div>
+
+
+                        <!-- ADDRESS -->
+                        <div class="form-group">
+
+                            <label for="address">
+                                Address <span class="required">*</span>
+                            </label>
+
+                            <input type="text" id="address" name="address" placeholder="Enter patient's address"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BIOMETRIC INFORMATION -->
+                    <div class="biometric-box">
+
+                        <h3>
+                            Biometric Identification
+                        </h3>
+
+                        <p>
+                            Enter or generate the biometric identification number
+                            that will be associated with this patient.
+                        </p>
+
+
+                        <div class="biometric-input">
+
+                            <input type="text" id="biometric_id" name="biometric_id" placeholder="e.g. BIO-0001"
+                                required>
+
+                            <button type="button" class="generate-btn" onclick="generateBiometricId()">
+                                Generate ID
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MEDICAL HISTORY -->
+                    <div style="margin-top: 25px;">
+
+                        <h3 class="section-title">
+                            Medical History
+                        </h3>
+
+
+                        <div class="form-group">
+
+                            <label for="medical_history">
+                                Medical History <span class="required">*</span>
+                            </label>
+
+                            <textarea id="medical_history" name="medical_history"
+                                placeholder="Enter relevant medical history, previous conditions, allergies, medications, or other important information..."
+                                required></textarea>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BUTTONS -->
+                    <div class="button-area">
+
+                        <button type="button" class="btn btn-cancel" onclick="cancelRegistration()">
+                            Cancel
+                        </button>
+
+
+                        <button type="submit" class="btn btn-save">
+                            Register Patient
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // Generate a temporary biometric ID
+        function generateBiometricId() {
+
+            const number = Math.floor(
+                1000 + Math.random() * 9000
+            );
+
+            document.getElementById("biometric_id").value =
+                "BIO-" + number;
+
+        }
+
+
+        // Cancel registration
+        function cancelRegistration() {
+
+            const confirmCancel = confirm(
+                "Are you sure you want to cancel this registration?"
+            );
+
+            if (confirmCancel) {
+
+                document.getElementById("patientForm").reset();
+
+                window.location.href = "patients.html";
+
+            }
+
+        }
+
+
+        // Handle registration form
+        document.getElementById("patientForm").addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+                const successMessage =
+                    document.getElementById("successMessage");
+
+                successMessage.style.display = "block";
+
+                successMessage.innerHTML =
+                    "Patient information has been captured successfully.";
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

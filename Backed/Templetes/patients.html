@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Management | Intelligent Biometric Healthcare System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(180deg, #0f3d68, #082c4d);
+            color: white;
+            padding: 25px 15px;
+            overflow-y: auto;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo .icon {
+            font-size: 42px;
+        }
+
+        .logo h2 {
+            font-size: 18px;
+            margin-top: 8px;
+        }
+
+        .logo p {
+            font-size: 11px;
+            opacity: 0.75;
+            margin-top: 5px;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #a9c5df;
+            margin: 20px 12px 10px;
+            letter-spacing: 1px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #dcecff;
+            text-decoration: none;
+            padding: 13px 14px;
+            border-radius: 9px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: rgba(255, 255, 255, 0.13);
+            color: white;
+        }
+
+        .menu a.active {
+            border-left: 4px solid #38bdf8;
+        }
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 75px;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .topbar h1 {
+            font-size: 22px;
+            color: #123d63;
+        }
+
+        .topbar p {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 3px;
+        }
+
+        .admin {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .notification {
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .profile {
+            width: 40px;
+            height: 40px;
+            background: #0f3d68;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-heading h2 {
+            color: #123d63;
+            font-size: 25px;
+        }
+
+        .page-heading p {
+            color: #718096;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .add-btn {
+            background: #0f3d68;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .add-btn:hover {
+            background: #082c4d;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-card h3 {
+            font-size: 26px;
+            color: #123d63;
+        }
+
+        .stat-card p {
+            color: #718096;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            background: #e9f5ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+        }
+
+        .search-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 13px 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .search-box input:focus {
+            border-color: #0f3d68;
+        }
+
+        .search-btn {
+            background: #0f3d68;
+            color: white;
+            border: none;
+            padding: 0 22px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .table-header {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h3 {
+            color: #123d63;
+        }
+
+        .table-header span {
+            font-size: 13px;
+            color: #718096;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 12px;
+            text-align: left;
+            padding: 14px 15px;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 16px 15px;
+            border-top: 1px solid #edf0f4;
+            font-size: 13px;
+        }
+
+        tr:hover {
+            background: #fafcff;
+        }
+
+        .patient-name {
+            font-weight: 600;
+            color: #123d63;
+        }
+
+        .patient-number {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .biometric {
+            background: #e9f8ef;
+            color: #16834a;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .no-biometric {
+            background: #f1f5f9;
+            color: #64748b;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .risk-low {
+            background: #e9f8ef;
+            color: #16834a;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .risk-medium {
+            background: #fff6df;
+            color: #a66a00;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .risk-high {
+            background: #ffe8e8;
+            color: #c62828;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .action-btn {
+            border: none;
+            padding: 7px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .view {
+            background: #e8f2ff;
+            color: #1769aa;
+        }
+
+        .edit {
+            background: #fff4dc;
+            color: #a56700;
+        }
+
+        .delete {
+            background: #ffe8e8;
+            color: #c62828;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+        }
+
+        .error {
+            text-align: center;
+            padding: 30px;
+            color: #c62828;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 25px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        @media (max-width: 1000px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+            }
+        }
+
+        @media (max-width: 750px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .page-heading {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 850px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="icon">🏥</div>
+            <h2>IBH System</h2>
+            <p>Intelligent Biometric Healthcare</p>
+        </div>
+
+        <div class="menu-title">Main Menu</div>
+
+        <nav class="menu">
+            <a href="/dashboard">📊 <span>Dashboard</span></a>
+
+            <a href="/patients" class="active">
+                👤 <span>Patients</span>
+            </a>
+
+            <a href="/biometric">🔐 <span>Biometric Identification</span></a>
+            <a href="/medical-records">📋 <span>Medical Records</span></a>
+            <a href="/appointments">📅 <span>Appointments</span></a>
+            <a href="/ai-prediction">🤖 <span>AI Risk Prediction</span></a>
+            <a href="/reports">📈 <span>Reports</span></a>
+        </nav>
+
+        <div class="menu-title">Administration</div>
+
+        <nav class="menu">
+            <a href="/users">👥 <span>Users</span></a>
+            <a href="/settings">⚙️ <span>Settings</span></a>
+            <a href="/login">🚪 <span>Logout</span></a>
+        </nav>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div>
+                <h1>Patient Management</h1>
+                <p>Manage and monitor registered healthcare patients</p>
+            </div>
+
+            <div class="admin">
+                <div class="notification">🔔</div>
+                <div class="profile">AD</div>
+                <div>
+                    <strong>Administrator</strong>
+                    <p>System Administrator</p>
+                </div>
+            </div>
+
+        </header>
+
+
+        <section class="content">
+
+            <!-- PAGE HEADING -->
+            <div class="page-heading">
+
+                <div>
+                    <h2>Patients</h2>
+                    <p>View, search and manage patient information.</p>
+                </div>
+
+                <button class="add-btn" onclick="registerPatient()">
+                    ＋ Register New Patient
+                </button>
+
+            </div>
+
+
+            <!-- STATISTICS -->
+            <div class="stats">
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <div>
+                            <h3 id="totalPatients">0</h3>
+                            <p>Total Patients</p>
+                        </div>
+                        <div class="stat-icon">👥</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <div>
+                            <h3 id="biometricPatients">0</h3>
+                            <p>Biometric Enrolled</p>
+                        </div>
+                        <div class="stat-icon">🔐</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <div>
+                            <h3 id="newPatients">0</h3>
+                            <p>New This Month</p>
+                        </div>
+                        <div class="stat-icon">➕</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <div>
+                            <h3 id="highRiskPatients">0</h3>
+                            <p>High Risk Patients</p>
+                        </div>
+                        <div class="stat-icon">⚠️</div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH -->
+            <div class="search-section">
+
+                <div class="search-box">
+
+                    <input type="text" id="searchInput"
+                        placeholder="Search by patient name, patient number, phone or biometric ID..."
+                        onkeyup="searchPatients()">
+
+                    <button class="search-btn" onclick="searchPatients()">
+                        🔎 Search
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- PATIENT TABLE -->
+            <div class="table-container">
+
+                <div class="table-header">
+                    <h3>Registered Patients</h3>
+                    <span id="patientCount">Loading patients...</span>
+                </div>
+
+                <table id="patientsTable">
+
+                    <thead>
+                        <tr>
+                            <th>Patient</th>
+                            <th>Gender</th>
+                            <th>Phone</th>
+                            <th>Biometric</th>
+                            <th>Risk Level</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="patientsBody">
+
+                        <tr>
+                            <td colspan="6" class="loading">
+                                Loading registered patients...
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="footer">
+                © 2026 Intelligent Biometric Healthcare System • Patient Management Module
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        let allPatients = [];
+
+
+        // LOAD PATIENTS FROM MYSQL THROUGH FLASK
+        async function loadPatients() {
+
+            const body = document.getElementById("patientsBody");
+
+            try {
+
+                const response = await fetch("/get-patients");
+
+                if (!response.ok) {
+                    throw new Error("Unable to connect to patient database.");
+                }
+
+                const data = await response.json();
+
+                // Accept either direct array or {patients: [...]}
+                if (Array.isArray(data)) {
+                    allPatients = data;
+                } else if (data.patients && Array.isArray(data.patients)) {
+                    allPatients = data.patients;
+                } else {
+                    allPatients = [];
+                }
+
+                displayPatients(allPatients);
+                updateStatistics(allPatients);
+
+            } catch (error) {
+
+                console.error("Patient loading error:", error);
+
+                body.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="error">
+                            Unable to load patients from the database.
+                            <br><br>
+                            Please make sure Flask and MySQL are running.
+                        </td>
+                    </tr>
+                `;
+
+                document.getElementById("patientCount").textContent =
+                    "Database connection error";
+
+            }
+
+        }
+
+
+        // DISPLAY PATIENTS
+        function displayPatients(patients) {
+
+            const body = document.getElementById("patientsBody");
+
+            body.innerHTML = "";
+
+            if (patients.length === 0) {
+
+                body.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="empty">
+                            No registered patients found.
+                        </td>
+                    </tr>
+                `;
+
+                document.getElementById("patientCount").textContent =
+                    "Showing 0 patients";
+
+                return;
+            }
+
+
+            patients.forEach(function (patient) {
+
+                const row = document.createElement("tr");
+
+                const patientNumber =
+                    patient.Patient_number ||
+                    patient.patient_number ||
+                    patient.patientNumber ||
+                    "";
+
+                const fullName =
+                    patient.Full_name ||
+                    patient.full_name ||
+                    patient.fullName ||
+                    "";
+
+                const gender =
+                    patient.Gender ||
+                    patient.gender ||
+                    "";
+
+                const phone =
+                    patient.Phone ||
+                    patient.phone ||
+                    "";
+
+                const biometricId =
+                    patient.Biometric_id ||
+                    patient.biometric_id ||
+                    patient.biometricId ||
+                    "";
+
+                const medicalHistory =
+                    patient.Medical_history ||
+                    patient.medical_history ||
+                    patient.medicalHistory ||
+                    "";
+
+
+                // Determine biometric status
+                let biometricHTML = "";
+
+                if (biometricId && biometricId.trim() !== "") {
+
+                    biometricHTML =
+                        '<span class="biometric">✓ Enrolled</span>';
+
+                } else {
+
+                    biometricHTML =
+                        '<span class="no-biometric">Not Enrolled</span>';
+
+                }
+
+
+                // Basic risk indication from medical history
+                let riskLevel = "Low";
+                let riskClass = "risk-low";
+
+                const historyText =
+                    medicalHistory.toLowerCase();
+
+
+                if (
+                    historyText.includes("pressure") ||
+                    historyText.includes("diabetes") ||
+                    historyText.includes("hypertension") ||
+                    historyText.includes("heart")
+                ) {
+
+                    riskLevel = "Medium";
+                    riskClass = "risk-medium";
+
+                }
+
+
+                if (
+                    historyText.includes("critical") ||
+                    historyText.includes("severe")
+                ) {
+
+                    riskLevel = "High";
+                    riskClass = "risk-high";
+
+                }
+
+
+                row.innerHTML = `
+
+                    <td>
+                        <div class="patient-name">
+                            ${escapeHTML(fullName)}
+                        </div>
+
+                        <div class="patient-number">
+                            ${escapeHTML(patientNumber)}
+                        </div>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(gender)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(phone)}
+                    </td>
+
+                    <td>
+                        ${biometricHTML}
+                    </td>
+
+                    <td>
+                        <span class="${riskClass}">
+                            ${riskLevel}
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <div class="actions">
+
+                            <button
+                                class="action-btn view"
+                                onclick="viewPatient('${escapeJS(fullName)}')">
+                                View
+                            </button>
+
+                            <button
+                                class="action-btn edit"
+                                onclick="editPatient('${escapeJS(patientNumber)}')">
+                                Edit
+                            </button>
+
+                            <button
+                                class="action-btn delete"
+                                onclick="deletePatient('${escapeJS(patientNumber)}')">
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                `;
+
+
+                body.appendChild(row);
+
+            });
+
+
+            document.getElementById("patientCount").textContent =
+                "Showing " + patients.length + " patients";
+
+        }
+
+
+        // UPDATE STATISTICS
+        function updateStatistics(patients) {
+
+            const total =
+                patients.length;
+
+            let biometricCount = 0;
+            let highRiskCount = 0;
+            let newThisMonth = 0;
+
+
+            patients.forEach(function (patient) {
+
+                const biometricId =
+                    patient.Biometric_id ||
+                    patient.biometric_id ||
+                    "";
+
+                if (
+                    biometricId &&
+                    biometricId.toString().trim() !== ""
+                ) {
+
+                    biometricCount++;
+
+                }
+
+
+                const history =
+                    (
+                        patient.Medical_history ||
+                        patient.medical_history ||
+                        ""
+                    ).toLowerCase();
+
+
+                if (
+                    history.includes("critical") ||
+                    history.includes("severe")
+                ) {
+
+                    highRiskCount++;
+
+                }
+
+
+                const dateValue =
+                    patient.Date_of_birth ||
+                    patient.date_of_birth ||
+                    "";
+
+                // This statistic is kept safe because
+                // the current patients table does not
+                // contain a registration-date field.
+
+            });
+
+
+            document.getElementById("totalPatients").textContent =
+                total;
+
+            document.getElementById("biometricPatients").textContent =
+                biometricCount;
+
+            document.getElementById("highRiskPatients").textContent =
+                highRiskCount;
+
+            // Registration date is not currently stored
+            // in the patients table.
+            document.getElementById("newPatients").textContent =
+                "0";
+
+        }
+
+
+        // SEARCH PATIENTS
+        function searchPatients() {
+
+            const input =
+                document.getElementById("searchInput");
+
+            const filter =
+                input.value.toLowerCase().trim();
+
+
+            if (filter === "") {
+
+                displayPatients(allPatients);
+                return;
+
+            }
+
+
+            const filtered =
+                allPatients.filter(function (patient) {
+
+                    const patientNumber =
+                        String(
+                            patient.Patient_number ||
+                            patient.patient_number ||
+                            ""
+                        ).toLowerCase();
+
+                    const fullName =
+                        String(
+                            patient.Full_name ||
+                            patient.full_name ||
+                            ""
+                        ).toLowerCase();
+
+                    const phone =
+                        String(
+                            patient.Phone ||
+                            patient.phone ||
+                            ""
+                        ).toLowerCase();
+
+                    const biometricId =
+                        String(
+                            patient.Biometric_id ||
+                            patient.biometric_id ||
+                            ""
+                        ).toLowerCase();
+
+
+                    return (
+                        patientNumber.includes(filter) ||
+                        fullName.includes(filter) ||
+                        phone.includes(filter) ||
+                        biometricId.includes(filter)
+                    );
+
+                });
+
+
+            displayPatients(filtered);
+
+        }
+
+
+        // REGISTER NEW PATIENT
+        function registerPatient() {
+
+            window.location.href =
+                "/patient-registration";
+
+        }
+
+
+        // VIEW PATIENT
+        function viewPatient(name) {
+
+            const patient =
+                allPatients.find(function (item) {
+
+                    const fullName =
+                        item.Full_name ||
+                        item.full_name ||
+                        "";
+
+                    return fullName === name;
+
+                });
+
+
+            if (!patient) {
+
+                alert(
+                    "Patient profile could not be found."
+                );
+
+                return;
+
+            }
+
+
+            const patientNumber =
+                patient.Patient_number ||
+                patient.patient_number ||
+                "N/A";
+
+            const fullName =
+                patient.Full_name ||
+                patient.full_name ||
+                "N/A";
+
+            const gender =
+                patient.Gender ||
+                patient.gender ||
+                "N/A";
+
+            const phone =
+                patient.Phone ||
+                patient.phone ||
+                "N/A";
+
+            const address =
+                patient.Address ||
+                patient.address ||
+                "N/A";
+
+            const medicalHistory =
+                patient.Medical_history ||
+                patient.medical_history ||
+                "N/A";
+
+
+            alert(
+                "PATIENT PROFILE\n\n" +
+                "Patient Number: " + patientNumber + "\n" +
+                "Full Name: " + fullName + "\n" +
+                "Gender: " + gender + "\n" +
+                "Phone: " + phone + "\n" +
+                "Address: " + address + "\n" +
+                "Medical History: " + medicalHistory
+            );
+
+        }
+
+
+        // EDIT PATIENT
+        function editPatient(patientNumber) {
+
+            alert(
+                "Edit Patient\n\n" +
+                "Selected Patient: " +
+                patientNumber +
+                "\n\n" +
+                "The editing module will be connected in the next development stage."
+            );
+
+        }
+
+
+        // DELETE PATIENT
+        function deletePatient(patientNumber) {
+
+            const confirmation =
+                confirm(
+                    "Are you sure you want to delete patient " +
+                    patientNumber +
+                    "?"
+                );
+
+
+            if (confirmation) {
+
+                alert(
+                    "Delete function will be connected in the next development stage."
+                );
+
+            }
+
+        }
+
+
+        // PROTECT HTML DISPLAY
+        function escapeHTML(value) {
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        // PROTECT JAVASCRIPT VALUES
+        function escapeJS(value) {
+
+            return String(value)
+                .replace(/\\/g, "\\\\")
+                .replace(/'/g, "\\'")
+                .replace(/"/g, '\\"')
+                .replace(/\n/g, "\\n")
+                .replace(/\r/g, "\\r");
+
+        }
+
+
+        // LOAD DATABASE PATIENTS WHEN PAGE OPENS
+        window.addEventListener(
+            "DOMContentLoaded",
+            loadPatients
+        );
+
+    </script>
+
+</body>
+
+</html>

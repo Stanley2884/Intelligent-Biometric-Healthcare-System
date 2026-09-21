@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Patient Registration | Intelligent Biometric Healthcare System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .header {
+            background: #0b5ed7;
+            color: white;
+            padding: 20px 40px;
+        }
+
+        .header h1 {
+            font-size: 25px;
+        }
+
+        .header p {
+            margin-top: 6px;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h2 {
+            font-size: 28px;
+            color: #12355b;
+        }
+
+        .page-title p {
+            margin-top: 8px;
+            color: #6b7280;
+        }
+
+        .form-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-size: 19px;
+            color: #0b5ed7;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / 3;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #0b5ed7;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .button-area {
+            margin-top: 30px;
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            border: none;
+            padding: 13px 25px;
+            border-radius: 7px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            background: #0b5ed7;
+            color: white;
+        }
+
+        .save-btn:hover {
+            background: #084298;
+        }
+
+        .clear-btn {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .message {
+            display: none;
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 7px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .success {
+            display: block;
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        @media (max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: 1;
+            }
+
+            .header {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Intelligent Biometric Healthcare System</h1>
+        <p>Patient Management and AI-Powered Healthcare Platform</p>
+    </div>
+
+    <div class="container">
+
+        <div class="page-title">
+            <h2>Patient Registration</h2>
+            <p>Register a new patient into the healthcare management system.</p>
+        </div>
+
+        <div class="form-card">
+
+            <div class="section-title">
+                Patient Information
+            </div>
+
+            <form id="patientForm">
+
+                <div class="form-grid">
+
+                    <!-- PATIENT NUMBER -->
+                    <div class="form-group">
+                        <label for="Patient_number">
+                            Patient Number
+                        </label>
+
+                        <input type="text" id="Patient_number" name="Patient_number" placeholder="e.g. PAT_0003"
+                            required>
+                    </div>
+
+
+                    <!-- FULL NAME -->
+                    <div class="form-group">
+                        <label for="Full_name">
+                            Full Name
+                        </label>
+
+                        <input type="text" id="Full_name" name="Full_name" placeholder="Enter patient's full name"
+                            required>
+                    </div>
+
+
+                    <!-- DATE OF BIRTH -->
+                    <div class="form-group">
+                        <label for="Date_of_birth">
+                            Date of Birth
+                        </label>
+
+                        <input type="date" id="Date_of_birth" name="Date_of_birth" required>
+                    </div>
+
+
+                    <!-- GENDER -->
+                    <div class="form-group">
+                        <label for="Gender">
+                            Gender
+                        </label>
+
+                        <select id="Gender" name="Gender" required>
+                            <option value="">
+                                Select Gender
+                            </option>
+
+                            <option value="Male">
+                                Male
+                            </option>
+
+                            <option value="Female">
+                                Female
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+                        </select>
+                    </div>
+
+
+                    <!-- PHONE -->
+                    <div class="form-group">
+                        <label for="Phone">
+                            Phone Number
+                        </label>
+
+                        <input type="tel" id="Phone" name="Phone" placeholder="e.g. 0712345678" required>
+                    </div>
+
+
+                    <!-- BIOMETRIC ID -->
+                    <div class="form-group">
+                        <label for="Biometric_id">
+                            Biometric ID
+                        </label>
+
+                        <input type="text" id="Biometric_id" name="Biometric_id"
+                            placeholder="Enter biometric identifier" required>
+                    </div>
+
+
+                    <!-- ADDRESS -->
+                    <div class="form-group full">
+                        <label for="Address">
+                            Address
+                        </label>
+
+                        <input type="text" id="Address" name="Address" placeholder="Enter patient's address" required>
+                    </div>
+
+
+                    <!-- MEDICAL HISTORY -->
+                    <div class="form-group full">
+                        <label for="Medical_history">
+                            Medical History
+                        </label>
+
+                        <textarea id="Medical_history" name="Medical_history"
+                            placeholder="Enter relevant medical history..." required></textarea>
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+                <div class="button-area">
+
+                    <button type="submit" class="save-btn" id="registerButton">
+                        Register Patient
+                    </button>
+
+                    <button type="reset" class="clear-btn" id="clearButton">
+                        Clear Form
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <!-- MESSAGE -->
+            <div id="message" class="message"></div>
+
+        </div>
+
+
+        <div class="footer">
+            Intelligent Biometric Healthcare System © 2026
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const form =
+            document.getElementById("patientForm");
+
+        const message =
+            document.getElementById("message");
+
+        const registerButton =
+            document.getElementById("registerButton");
+
+
+        form.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                message.className =
+                    "message";
+
+                message.style.display =
+                    "block";
+
+                message.textContent =
+                    "Registering patient...";
+
+
+                // Collect form information
+                const formData =
+                    new FormData(form);
+
+
+                try {
+
+                    // Send directly to Flask
+                    const response =
+                        await fetch(
+                            "/register-patient",
+                            {
+                                method: "POST",
+                                body: formData
+                            }
+                        );
+
+
+                    const result =
+                        await response.json();
+
+
+                    if (
+                        response.ok &&
+                        result.success
+                    ) {
+
+                        message.className =
+                            "message success";
+
+                        message.textContent =
+                            result.message;
+
+
+                        // Clear form
+                        form.reset();
+
+                    }
+
+                    else {
+
+                        message.className =
+                            "message error";
+
+                        message.textContent =
+                            result.message ||
+                            "Patient registration failed.";
+
+                    }
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Registration Error:",
+                        error
+                    );
+
+
+                    message.className =
+                        "message error";
+
+                    message.textContent =
+                        "Unable to connect to Flask server.";
+
+                }
+
+
+                registerButton.disabled =
+                    false;
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

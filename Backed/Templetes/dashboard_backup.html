@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Intelligent Biometric Healthcare System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #0b3d91;
+            color: white;
+            padding: 22px 15px;
+            overflow-y: auto;
+        }
+
+        .brand {
+            padding: 5px 12px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .brand h2 {
+            font-size: 19px;
+            line-height: 1.4;
+        }
+
+        .brand p {
+            font-size: 11px;
+            color: #dbeafe;
+            margin-top: 5px;
+        }
+
+        .menu-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #bfdbfe;
+            padding: 0 12px;
+            margin: 20px 0 8px;
+            letter-spacing: 1px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 12px;
+            margin: 4px 0;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #1976d2;
+        }
+
+        .menu-icon {
+            width: 22px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .logout {
+            margin-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 15px;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        /* TOP BAR */
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .page-title h1 {
+            font-size: 23px;
+            color: #111827;
+        }
+
+        .page-title p {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .notification {
+            position: relative;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -6px;
+            background: #dc2626;
+            color: white;
+            font-size: 9px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: #dbeafe;
+            color: #0b3d91;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .user-info span {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 30px;
+        }
+
+        .welcome {
+            background: linear-gradient(135deg, #0b3d91, #1976d2);
+            color: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            font-size: 13px;
+            color: #e0ecff;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        /* STAT CARDS */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-card h3 {
+            font-size: 26px;
+            margin-bottom: 5px;
+            color: #111827;
+        }
+
+        .stat-card p {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: #eff6ff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+        }
+
+        /* GRID */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-header h3 {
+            font-size: 15px;
+            color: #111827;
+        }
+
+        .view-all {
+            font-size: 11px;
+            color: #1976d2;
+            text-decoration: none;
+        }
+
+        /* TABLE */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 13px 20px;
+            text-align: left;
+            font-size: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        th {
+            color: #6b7280;
+            background: #f9fafb;
+            font-weight: bold;
+        }
+
+        td {
+            color: #374151;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .status.verified {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status.risk {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* APPOINTMENTS */
+        .appointment {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .appointment:last-child {
+            border-bottom: none;
+        }
+
+        .appointment-date {
+            color: #1976d2;
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .appointment h4 {
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .appointment p {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        /* QUICK ACTIONS */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .action {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #111827;
+            transition: 0.2s;
+        }
+
+        .action:hover {
+            border-color: #1976d2;
+            transform: translateY(-2px);
+        }
+
+        .action-icon {
+            font-size: 27px;
+            margin-bottom: 10px;
+        }
+
+        .action h4 {
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .action p {
+            font-size: 10px;
+            color: #6b7280;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 25px;
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1100px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                width: 70px;
+                padding: 15px 8px;
+            }
+
+            .brand h2,
+            .brand p,
+            .menu-title,
+            .menu a span:not(.menu-icon),
+            .logout span:not(.menu-icon) {
+                display: none;
+            }
+
+            .brand {
+                text-align: center;
+                border: none;
+            }
+
+            .menu a {
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 70px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                padding: 0 15px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .user-info {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <h2>🏥 Intelligent Healthcare</h2>
+            <p>Biometric & AI Healthcare Platform</p>
+        </div>
+
+        <div class="menu">
+
+            <div class="menu-title">Main</div>
+
+            <a href="dashboard.html" class="active">
+                <span class="menu-icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="patients.html">
+                <span class="menu-icon">👤</span>
+                <span>Patients</span>
+            </a>
+
+            <a href="biometric.html">
+                <span class="menu-icon">🧬</span>
+                <span>Biometric Identification</span>
+            </a>
+
+            <div class="menu-title">Healthcare</div>
+
+            <a href="medical_records.html">
+                <span class="menu-icon">📋</span>
+                <span>Medical Records</span>
+            </a>
+
+            <a href="appointments.html">
+                <span class="menu-icon">📅</span>
+                <span>Appointments</span>
+            </a>
+
+            <a href="ai_prediction.html">
+                <span class="menu-icon">🤖</span>
+                <span>AI Risk Prediction</span>
+            </a>
+
+            <div class="menu-title">System</div>
+
+            <a href="reports.html">
+                <span class="menu-icon">📈</span>
+                <span>Reports</span>
+            </a>
+
+            <a href="users.html">
+                <span class="menu-icon">👥</span>
+                <span>Users</span>
+            </a>
+
+            <a href="settings.html">
+                <span class="menu-icon">⚙️</span>
+                <span>Settings</span>
+            </a>
+
+            <div class="logout">
+                <a href="login.html">
+                    <span class="menu-icon">🚪</span>
+                    <span>Logout</span>
+                </a>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div class="page-title">
+                <h1>Dashboard</h1>
+                <p>Healthcare system overview</p>
+            </div>
+
+            <div class="user-area">
+
+                <div class="notification">
+                    🔔
+                    <span class="notification-badge">3</span>
+                </div>
+
+                <div class="user">
+
+                    <div class="avatar">
+                        AD
+                    </div>
+
+                    <div class="user-info">
+                        <strong>Administrator</strong>
+                        <span>System Administrator</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+        <section class="content">
+
+            <!-- WELCOME -->
+            <div class="welcome">
+
+                <h2>Welcome to the Healthcare Dashboard</h2>
+
+                <p>
+                    Manage patients, biometric identification, medical records,
+                    appointments and AI-powered disease risk prediction from one
+                    centralized healthcare platform.
+                </p>
+
+            </div>
+
+
+            <!-- STATISTICS -->
+            <div class="stats">
+
+                <div class="stat-card">
+
+                    <div>
+                        <h3>1,248</h3>
+                        <p>Registered Patients</p>
+                    </div>
+
+                    <div class="stat-icon">
+                        👥
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div>
+                        <h3>1,106</h3>
+                        <p>Biometric Records</p>
+                    </div>
+
+                    <div class="stat-icon">
+                        🧬
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div>
+                        <h3>86</h3>
+                        <p>Today's Appointments</p>
+                    </div>
+
+                    <div class="stat-icon">
+                        📅
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div>
+                        <h3>42</h3>
+                        <p>AI Risk Assessments</p>
+                    </div>
+
+                    <div class="stat-icon">
+                        🤖
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DASHBOARD GRID -->
+            <div class="dashboard-grid">
+
+                <!-- RECENT PATIENTS -->
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <h3>Recent Patient Activity</h3>
+                        <a href="patients.html" class="view-all">View All</a>
+                    </div>
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>Patient No.</th>
+                                    <th>Patient Name</th>
+                                    <th>Biometric Status</th>
+                                    <th>Risk Level</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr>
+                                    <td>P00124</td>
+                                    <td>John Kamau</td>
+                                    <td>
+                                        <span class="status verified">
+                                            Verified
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="status pending">
+                                            Moderate
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>P00123</td>
+                                    <td>Mary Wanjiku</td>
+                                    <td>
+                                        <span class="status verified">
+                                            Verified
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="status verified">
+                                            Low
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>P00122</td>
+                                    <td>David Mwangi</td>
+                                    <td>
+                                        <span class="status verified">
+                                            Verified
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="status risk">
+                                            High
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>P00121</td>
+                                    <td>Grace Mutua</td>
+                                    <td>
+                                        <span class="status pending">
+                                            Pending
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="status verified">
+                                            Low
+                                        </span>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <!-- APPOINTMENTS -->
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <h3>Today's Appointments</h3>
+                        <a href="appointments.html" class="view-all">View All</a>
+                    </div>
+
+                    <div class="appointment">
+
+                        <div class="appointment-date">
+                            09:00 AM
+                        </div>
+
+                        <h4>John Kamau</h4>
+
+                        <p>
+                            General Consultation · Dr. Mwania
+                        </p>
+
+                    </div>
+
+
+                    <div class="appointment">
+
+                        <div class="appointment-date">
+                            10:30 AM
+                        </div>
+
+                        <h4>Mary Wanjiku</h4>
+
+                        <p>
+                            Medical Review · Dr. Mutua
+                        </p>
+
+                    </div>
+
+
+                    <div class="appointment">
+
+                        <div class="appointment-date">
+                            12:00 PM
+                        </div>
+
+                        <h4>David Mwangi</h4>
+
+                        <p>
+                            AI Risk Assessment · Dr. Kamau
+                        </p>
+
+                    </div>
+
+
+                    <div class="appointment">
+
+                        <div class="appointment-date">
+                            02:30 PM
+                        </div>
+
+                        <h4>Grace Mutua</h4>
+
+                        <p>
+                            Follow-up · Dr. Wanjiku
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- QUICK ACTIONS -->
+            <div class="panel">
+
+                <div class="panel-header">
+                    <h3>Quick Actions</h3>
+                </div>
+
+                <div style="padding: 20px;">
+
+                    <div class="quick-actions">
+
+                        <a href="patient_registration.html" class="action">
+
+                            <div class="action-icon">
+                                👤
+                            </div>
+
+                            <h4>Register Patient</h4>
+
+                            <p>
+                                Add a new patient
+                            </p>
+
+                        </a>
+
+
+                        <a href="biometric.html" class="action">
+
+                            <div class="action-icon">
+                                🧬
+                            </div>
+
+                            <h4>Biometric Scan</h4>
+
+                            <p>
+                                Identify a patient
+                            </p>
+
+                        </a>
+
+
+                        <a href="ai_prediction.html" class="action">
+
+                            <div class="action-icon">
+                                🤖
+                            </div>
+
+                            <h4>AI Prediction</h4>
+
+                            <p>
+                                Assess disease risk
+                            </p>
+
+                        </a>
+
+
+                        <a href="reports.html" class="action">
+
+                            <div class="action-icon">
+                                📊
+                            </div>
+
+                            <h4>Generate Report</h4>
+
+                            <p>
+                                View system reports
+                            </p>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer>
+            Intelligent Biometric Healthcare System · AI-Powered Patient Identification & Disease Risk Prediction
+            <br>
+            © 2026 All Rights Reserved
+        </footer>
+
+    </main>
+
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+flask
+flask-mysqldb
+deepface
+tensorflow
+scikit-learn
+opencv-python
+numpy
+pillow
+python-dotenv

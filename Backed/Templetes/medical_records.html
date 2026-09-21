@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Records | Intelligent Healthcare System</title>
+
+    ```
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #0f172a;
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .logo {
+            padding: 0 20px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 15px;
+        }
+
+        .logo h2 {
+            font-size: 19px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .nav-item {
+            display: block;
+            padding: 13px 20px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #1e293b;
+            color: white;
+            border-left: 4px solid #38bdf8;
+        }
+
+        .main {
+            margin-left: 240px;
+            padding: 25px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 27px;
+            color: #0f172a;
+        }
+
+        .header p {
+            color: #64748b;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .btn {
+            border: none;
+            padding: 11px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .stat-title {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #0f172a;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .card-header h2 {
+            font-size: 18px;
+            color: #0f172a;
+        }
+
+        .search-box {
+            width: 250px;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        .search-box:focus {
+            border-color: #2563eb;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475569;
+            font-size: 12px;
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        td {
+            padding: 13px 12px;
+            font-size: 13px;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .badge-blue {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .badge-green {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .badge-red {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .badge-yellow {
+            background: #fef3c7;
+            color: #a16207;
+        }
+
+        .diagnosis-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 13px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .diagnosis-item:last-child {
+            border-bottom: none;
+        }
+
+        .diagnosis-name {
+            font-size: 13px;
+            color: #334155;
+        }
+
+        .diagnosis-count {
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .info-box {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .info-box span {
+            display: block;
+        }
+
+        .info-label {
+            color: #64748b;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .info-value {
+            color: #0f172a;
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 35px 10px;
+            color: #64748b;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px 15px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        @media (max-width: 1100px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+        }
+    </style>
+    ```
+
+</head>
+
+<body>
+
+    ```
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <h2>Intelligent Healthcare</h2>
+            <p>Biometric & AI Management System</p>
+        </div>
+
+        <a href="/dashboard.html" class="nav-item">Dashboard</a>
+        <a href="/patients.html" class="nav-item">Patients</a>
+        <a href="/biometric.html" class="nav-item">Biometric Identification</a>
+        <a href="/medical_records.html" class="nav-item active">Medical Records</a>
+        <a href="/appointments.html" class="nav-item">Appointments</a>
+        <a href="/ai_prediction.html" class="nav-item">AI Disease Prediction</a>
+        <a href="/reports.html" class="nav-item">Reports</a>
+        <a href="/users.html" class="nav-item">Users</a>
+        <a href="/settings.html" class="nav-item">Settings</a>
+        <a href="/logout" class="nav-item">Logout</a>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <div class="header">
+            <div>
+                <h1>Medical Records</h1>
+                <p>Manage and review patient medical records</p>
+            </div>
+
+            <button class="btn btn-primary" onclick="window.location.href='/medical-records'">
+                + Add Medical Record
+            </button>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+
+        <!-- MAIN STATISTICS -->
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-title">Total Medical Records</div>
+                <div class="stat-value" id="totalRecords">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-title">Today's Visits</div>
+                <div class="stat-value" id="todayVisits">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-title">Follow-ups</div>
+                <div class="stat-value" id="followUps">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-title">Critical Cases</div>
+                <div class="stat-value" id="criticalCases">0</div>
+            </div>
+
+        </div>
+
+        <div class="content-grid">
+
+            <!-- LEFT COLUMN -->
+            <div>
+
+                <div class="card">
+
+                    <div class="card-header">
+                        <h2>Medical Records</h2>
+
+                        <input type="text" id="searchInput" class="search-box"
+                            placeholder="Search patient, diagnosis..." onkeyup="searchRecords()">
+                    </div>
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Patient</th>
+                                    <th>Patient No.</th>
+                                    <th>Visit Date</th>
+                                    <th>Symptoms</th>
+                                    <th>Diagnosis</th>
+                                    <th>Doctor</th>
+                                    <th>Treatment</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="recordsTableBody">
+
+                                <tr>
+                                    <td colspan="8" class="loading">
+                                        Loading medical records...
+                                    </td>
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <!-- CLINICAL INFORMATION -->
+                <div class="card">
+
+                    <div class="card-header">
+                        <h2>Clinical Information</h2>
+                    </div>
+
+                    <div class="info-grid">
+
+                        <div class="info-box">
+                            <span class="info-label">Total Records</span>
+                            <span class="info-value" id="clinicalTotal">0</span>
+                        </div>
+
+                        <div class="info-box">
+                            <span class="info-label">Records Today</span>
+                            <span class="info-value" id="clinicalToday">0</span>
+                        </div>
+
+                        <div class="info-box">
+                            <span class="info-label">Unique Patients</span>
+                            <span class="info-value" id="uniquePatients">0</span>
+                        </div>
+
+                        <div class="info-box">
+                            <span class="info-label">Doctors Involved</span>
+                            <span class="info-value" id="doctorCount">0</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div>
+
+                <div class="card">
+
+                    <div class="card-header">
+                        <h2>Common Diagnoses</h2>
+                    </div>
+
+                    <div id="diagnosisList">
+
+                        <div class="empty-state">
+                            Loading diagnoses...
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script>
+
+        let allRecords = [];
+
+        // ---------------------------------------------------------
+        // GET A VALUE FROM DIFFERENT POSSIBLE FLASK FIELD NAMES
+        // ---------------------------------------------------------
+        function getValue(object, names, defaultValue = 0) {
+
+            if (!object) {
+                return defaultValue;
+            }
+
+            for (const name of names) {
+
+                if (
+                    object[name] !== undefined &&
+                    object[name] !== null &&
+                    object[name] !== ''
+                ) {
+                    return object[name];
+                }
+            }
+
+            return defaultValue;
+        }
+
+
+        // ---------------------------------------------------------
+        // LOAD MEDICAL RECORDS
+        // ---------------------------------------------------------
+        async function loadMedicalRecords() {
+
+            try {
+
+                const response = await fetch(
+                    '/get-medical-records',
+                    {
+                        method: 'GET',
+                        cache: 'no-store'
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(
+                        'Failed to load medical records'
+                    );
+                }
+
+                const data = await response.json();
+
+                console.log(
+                    'Medical Records Response:',
+                    data
+                );
+
+                if (data.status !== 'success') {
+
+                    throw new Error(
+                        data.message ||
+                        'Unable to load medical records'
+                    );
+                }
+
+                // -------------------------------------------------
+                // RECORDS
+                // -------------------------------------------------
+
+                allRecords = Array.isArray(data.records)
+                    ? data.records
+                    : [];
+
+                // -------------------------------------------------
+                // STATISTICS
+                //
+                // Accept BOTH:
+                //
+                // data.statistics.total_records
+                //
+                // AND:
+                //
+                // data.total_records
+                //
+                // This prevents the page from showing 0 when
+                // Flask sends the values directly.
+                // -------------------------------------------------
+
+                const statistics =
+                    data.statistics &&
+                        typeof data.statistics === 'object'
+                        ? data.statistics
+                        : data;
+
+
+                // -------------------------------------------------
+                // TOTAL RECORDS
+                // -------------------------------------------------
+
+                let totalRecords = Number(
+                    getValue(
+                        statistics,
+                        [
+                            'total_records',
+                            'total_medical_records',
+                            'medical_records',
+                            'records_count'
+                        ],
+                        allRecords.length
+                    )
+                );
+
+                if (!Number.isFinite(totalRecords)) {
+                    totalRecords = allRecords.length;
+                }
+
+
+                // -------------------------------------------------
+                // TODAY'S RECORDS
+                // -------------------------------------------------
+
+                let recordsToday = Number(
+                    getValue(
+                        statistics,
+                        [
+                            'records_today',
+                            'today_visits',
+                            'today_records',
+                            'visits_today'
+                        ],
+                        0
+                    )
+                );
+
+                if (!Number.isFinite(recordsToday)) {
+                    recordsToday = 0;
+                }
+
+                // If Flask does not provide today's count,
+                // calculate it from the records.
+                if (
+                    recordsToday === 0 &&
+                    allRecords.length > 0 &&
+                    !(
+                        'records_today' in statistics ||
+                        'today_visits' in statistics ||
+                        'today_records' in statistics ||
+                        'visits_today' in statistics
+                    )
+                ) {
+
+                    recordsToday = countRecordsToday(
+                        allRecords
+                    );
+                }
+
+
+                // -------------------------------------------------
+                // FOLLOW-UPS
+                // -------------------------------------------------
+
+                let followUps = Number(
+                    getValue(
+                        statistics,
+                        [
+                            'follow_ups',
+                            'followups',
+                            'follow_up',
+                            'follow_up_count'
+                        ],
+                        0
+                    )
+                );
+
+                if (!Number.isFinite(followUps)) {
+                    followUps = 0;
+                }
+
+                // If Flask does not provide follow-ups,
+                // calculate them from the treatment/diagnosis text.
+                if (
+                    followUps === 0 &&
+                    allRecords.length > 0 &&
+                    !(
+                        'follow_ups' in statistics ||
+                        'followups' in statistics ||
+                        'follow_up' in statistics ||
+                        'follow_up_count' in statistics
+                    )
+                ) {
+
+                    followUps = countFollowUps(
+                        allRecords
+                    );
+                }
+
+
+                // -------------------------------------------------
+                // CRITICAL CASES
+                // -------------------------------------------------
+
+                let criticalCases = Number(
+                    getValue(
+                        statistics,
+                        [
+                            'critical_cases',
+                            'critical',
+                            'critical_count',
+                            'critical_records'
+                        ],
+                        0
+                    )
+                );
+
+                if (!Number.isFinite(criticalCases)) {
+                    criticalCases = 0;
+                }
+
+                // If Flask does not provide critical cases,
+                // calculate them from diagnosis/risk information.
+                if (
+                    criticalCases === 0 &&
+                    allRecords.length > 0 &&
+                    !(
+                        'critical_cases' in statistics ||
+                        'critical' in statistics ||
+                        'critical_count' in statistics ||
+                        'critical_records' in statistics
+                    )
+                ) {
+
+                    criticalCases = countCriticalCases(
+                        allRecords
+                    );
+                }
+
+
+                // -------------------------------------------------
+                // UNIQUE PATIENTS
+                // -------------------------------------------------
+
+                let uniquePatients = Number(
+                    getValue(
+                        statistics,
+                        [
+                            'unique_patients',
+                            'patients_count',
+                            'unique_patient_count'
+                        ],
+                        0
+                    )
+                );
+
+                if (!Number.isFinite(uniquePatients)) {
+                    uniquePatients = 0;
+                }
+
+                if (
+                    uniquePatients === 0 &&
+                    allRecords.length > 0 &&
+                    !(
+                        'unique_patients' in statistics ||
+                        'patients_count' in statistics ||
+                        'unique_patient_count' in statistics
+                    )
+                ) {
+
+                    uniquePatients =
+                        countUniquePatients(allRecords);
+                }
+
+
+                // -------------------------------------------------
+                // DOCTORS INVOLVED
+                // -------------------------------------------------
+
+                let doctorsInvolved = Number(
+                    getValue(
+                        statistics,
+                        [
+                            'doctors_involved',
+                            'doctor_count',
+                            'unique_doctors'
+                        ],
+                        0
+                    )
+                );
+
+                if (!Number.isFinite(doctorsInvolved)) {
+                    doctorsInvolved = 0;
+                }
+
+                if (
+                    doctorsInvolved === 0 &&
+                    allRecords.length > 0 &&
+                    !(
+                        'doctors_involved' in statistics ||
+                        'doctor_count' in statistics ||
+                        'unique_doctors' in statistics
+                    )
+                ) {
+
+                    doctorsInvolved =
+                        countUniqueDoctors(allRecords);
+                }
+
+
+                // -------------------------------------------------
+                // UPDATE MAIN STATISTICS
+                // -------------------------------------------------
+
+                document.getElementById(
+                    'totalRecords'
+                ).textContent = totalRecords;
+
+                document.getElementById(
+                    'todayVisits'
+                ).textContent = recordsToday;
+
+                document.getElementById(
+                    'followUps'
+                ).textContent = followUps;
+
+                document.getElementById(
+                    'criticalCases'
+                ).textContent = criticalCases;
+
+
+                // -------------------------------------------------
+                // UPDATE CLINICAL INFORMATION
+                // -------------------------------------------------
+
+                document.getElementById(
+                    'clinicalTotal'
+                ).textContent = totalRecords;
+
+                document.getElementById(
+                    'clinicalToday'
+                ).textContent = recordsToday;
+
+                document.getElementById(
+                    'uniquePatients'
+                ).textContent = uniquePatients;
+
+                document.getElementById(
+                    'doctorCount'
+                ).textContent = doctorsInvolved;
+
+
+                // -------------------------------------------------
+                // DISPLAY RECORDS
+                // -------------------------------------------------
+
+                displayRecords(allRecords);
+
+
+                // -------------------------------------------------
+                // DISPLAY DIAGNOSES
+                // -------------------------------------------------
+
+                displayDiagnoses(allRecords);
+
+
+                // -------------------------------------------------
+                // HIDE ERROR MESSAGE
+                // -------------------------------------------------
+
+                document.getElementById(
+                    'errorMessage'
+                ).style.display = 'none';
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    'Error loading medical records:',
+                    error
+                );
+
+                document.getElementById(
+                    'errorMessage'
+                ).textContent =
+                    'Unable to load medical records: ' +
+                    error.message;
+
+                document.getElementById(
+                    'errorMessage'
+                ).style.display = 'block';
+
+                document.getElementById(
+                    'recordsTableBody'
+                ).innerHTML = `
+                <tr>
+                    <td colspan="8" class="empty-state">
+                        Unable to load medical records.
+                    </td>
+                </tr>
+            `;
+
+                document.getElementById(
+                    'diagnosisList'
+                ).innerHTML = `
+                <div class="empty-state">
+                    Unable to load diagnosis information.
+                </div>
+            `;
+            }
+        }
+
+
+        // ---------------------------------------------------------
+        // COUNT RECORDS TODAY
+        // ---------------------------------------------------------
+        function countRecordsToday(records) {
+
+            const today = new Date();
+
+            const todayYear =
+                today.getFullYear();
+
+            const todayMonth =
+                today.getMonth();
+
+            const todayDay =
+                today.getDate();
+
+            return records.filter(record => {
+
+                const dateValue =
+                    getRecordDate(record);
+
+                if (!dateValue) {
+                    return false;
+                }
+
+                const date =
+                    new Date(dateValue);
+
+                if (isNaN(date.getTime())) {
+                    return false;
+                }
+
+                return (
+                    date.getFullYear() === todayYear &&
+                    date.getMonth() === todayMonth &&
+                    date.getDate() === todayDay
+                );
+
+            }).length;
+        }
+
+
+        // ---------------------------------------------------------
+        // COUNT FOLLOW-UPS
+        // ---------------------------------------------------------
+        function countFollowUps(records) {
+
+            return records.filter(record => {
+
+                const text = (
+
+                    String(
+                        record.Treatment ||
+                        record.treatment ||
+                        ''
+                    ) +
+
+                    ' ' +
+
+                    String(
+                        record.Diagnosis ||
+                        record.diagnosis ||
+                        ''
+                    ) +
+
+                    ' ' +
+
+                    String(
+                        record.Symptoms ||
+                        record.symptoms ||
+                        record.Symtoms ||
+                        ''
+                    )
+
+                ).toLowerCase();
+
+                return (
+                    text.includes('follow-up') ||
+                    text.includes('follow up') ||
+                    text.includes('review') ||
+                    text.includes('return visit')
+                );
+
+            }).length;
+        }
+
+
+        // ---------------------------------------------------------
+        // COUNT CRITICAL CASES
+        // ---------------------------------------------------------
+        function countCriticalCases(records) {
+
+            return records.filter(record => {
+
+                const text = (
+
+                    String(
+                        record.Diagnosis ||
+                        record.diagnosis ||
+                        ''
+                    ) +
+
+                    ' ' +
+
+                    String(
+                        record.Symptoms ||
+                        record.symptoms ||
+                        record.Symtoms ||
+                        ''
+                    ) +
+
+                    ' ' +
+
+                    String(
+                        record.Treatment ||
+                        record.treatment ||
+                        ''
+                    ) +
+
+                    ' ' +
+
+                    String(
+                        record.Risk_level ||
+                        record.risk_level ||
+                        ''
+                    )
+
+                ).toLowerCase();
+
+                return (
+                    text.includes('critical') ||
+                    text.includes('severe') ||
+                    text.includes('emergency') ||
+                    text.includes('high risk')
+                );
+
+            }).length;
+        }
+
+
+        // ---------------------------------------------------------
+        // COUNT UNIQUE PATIENTS
+        // ---------------------------------------------------------
+        function countUniquePatients(records) {
+
+            const patients = new Set();
+
+            records.forEach(record => {
+
+                const patientNumber =
+                    record.Patient_number ||
+                    record.patient_number ||
+                    '';
+
+                const patientName =
+                    record.Full_name ||
+                    record.full_name ||
+                    '';
+
+                const identifier =
+                    patientNumber ||
+                    patientName;
+
+                if (identifier) {
+                    patients.add(
+                        String(identifier).trim().toLowerCase()
+                    );
+                }
+
+            });
+
+            return patients.size;
+        }
+
+
+        // ---------------------------------------------------------
+        // COUNT UNIQUE DOCTORS
+        // ---------------------------------------------------------
+        function countUniqueDoctors(records) {
+
+            const doctors = new Set();
+
+            records.forEach(record => {
+
+                const doctor =
+                    record.Doctor_name ||
+                    record.doctor_name ||
+                    '';
+
+                if (doctor) {
+
+                    doctors.add(
+                        String(doctor).trim().toLowerCase()
+                    );
+                }
+
+            });
+
+            return doctors.size;
+        }
+
+
+        // ---------------------------------------------------------
+        // GET RECORD DATE
+        // ---------------------------------------------------------
+        function getRecordDate(record) {
+
+            return (
+                record.Visit_dates ||
+                record.Visit_date ||
+                record.visit_date ||
+                record.visit_dates ||
+                record.VisitDate ||
+                record.visitDate ||
+                ''
+            );
+        }
+
+
+        // ---------------------------------------------------------
+        // DISPLAY MEDICAL RECORDS
+        // ---------------------------------------------------------
+        function displayRecords(records) {
+
+            const tbody =
+                document.getElementById(
+                    'recordsTableBody'
+                );
+
+            if (
+                !records ||
+                records.length === 0
+            ) {
+
+                tbody.innerHTML = `
+                <tr>
+                    <td colspan="8"
+                        class="empty-state">
+                        No medical records found.
+                    </td>
+                </tr>
+            `;
+
+                return;
+            }
+
+            tbody.innerHTML =
+                records.map(record => {
+
+                    const id =
+                        record.Id ||
+                        record.id ||
+                        '';
+
+                    const patientName =
+                        record.Full_name ||
+                        record.full_name ||
+                        'Unknown';
+
+                    const patientNumber =
+                        record.Patient_number ||
+                        record.patient_number ||
+                        '';
+
+                    const visitDate =
+                        getRecordDate(record);
+
+                    const symptoms =
+                        record.Symtoms ||
+                        record.Symptoms ||
+                        record.symptoms ||
+                        '';
+
+                    const diagnosis =
+                        record.Diagnosis ||
+                        record.diagnosis ||
+                        '';
+
+                    const doctor =
+                        record.Doctor_name ||
+                        record.doctor_name ||
+                        '';
+
+                    const treatment =
+                        record.Treatment ||
+                        record.treatment ||
+                        '';
+
+                    return `
+                    <tr>
+
+                        <td>
+                            ${escapeHtml(id)}
+                        </td>
+
+                        <td>
+                            <strong>
+                                ${escapeHtml(patientName)}
+                            </strong>
+                        </td>
+
+                        <td>
+                            <span class="badge badge-blue">
+                                ${escapeHtml(patientNumber)}
+                            </span>
+                        </td>
+
+                        <td>
+                            ${formatDate(visitDate)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(symptoms)}
+                        </td>
+
+                        <td>
+                            <span class="badge badge-green">
+                                ${escapeHtml(diagnosis)}
+                            </span>
+                        </td>
+
+                        <td>
+                            ${escapeHtml(doctor)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(treatment)}
+                        </td>
+
+                    </tr>
+                `;
+
+                }).join('');
+        }
+
+
+        // ---------------------------------------------------------
+        // DISPLAY DIAGNOSIS STATISTICS
+        // ---------------------------------------------------------
+        function displayDiagnoses(records) {
+
+            const diagnosisList =
+                document.getElementById(
+                    'diagnosisList'
+                );
+
+            if (
+                !records ||
+                records.length === 0
+            ) {
+
+                diagnosisList.innerHTML = `
+                <div class="empty-state">
+                    No diagnosis information available.
+                </div>
+            `;
+
+                return;
+            }
+
+            const diagnosisCounts = {};
+
+            records.forEach(record => {
+
+                const diagnosis =
+                    record.Diagnosis ||
+                    record.diagnosis ||
+                    'Unknown';
+
+                if (!diagnosisCounts[diagnosis]) {
+                    diagnosisCounts[diagnosis] = 0;
+                }
+
+                diagnosisCounts[diagnosis]++;
+            });
+
+
+            const sortedDiagnoses =
+                Object.entries(
+                    diagnosisCounts
+                ).sort(
+                    (a, b) => b[1] - a[1]
+                );
+
+
+            diagnosisList.innerHTML =
+                sortedDiagnoses.map(
+                    ([diagnosis, count]) => {
+
+                        return `
+                        <div class="diagnosis-item">
+
+                            <span class="diagnosis-name">
+                                ${escapeHtml(diagnosis)}
+                            </span>
+
+                            <span class="diagnosis-count">
+                                ${count}
+                            </span>
+
+                        </div>
+                    `;
+
+                    }
+                ).join('');
+        }
+
+
+        // ---------------------------------------------------------
+        // SEARCH RECORDS
+        // ---------------------------------------------------------
+        function searchRecords() {
+
+            const searchTerm =
+                document.getElementById(
+                    'searchInput'
+                ).value
+                    .toLowerCase()
+                    .trim();
+
+            if (!searchTerm) {
+
+                displayRecords(allRecords);
+
+                return;
+            }
+
+
+            const filteredRecords =
+                allRecords.filter(record => {
+
+                    const patientName =
+                        String(
+                            record.Full_name ||
+                            record.full_name ||
+                            ''
+                        ).toLowerCase();
+
+                    const patientNumber =
+                        String(
+                            record.Patient_number ||
+                            record.patient_number ||
+                            ''
+                        ).toLowerCase();
+
+                    const diagnosis =
+                        String(
+                            record.Diagnosis ||
+                            record.diagnosis ||
+                            ''
+                        ).toLowerCase();
+
+                    const doctor =
+                        String(
+                            record.Doctor_name ||
+                            record.doctor_name ||
+                            ''
+                        ).toLowerCase();
+
+                    const symptoms =
+                        String(
+                            record.Symtoms ||
+                            record.Symptoms ||
+                            record.symptoms ||
+                            ''
+                        ).toLowerCase();
+
+
+                    return (
+                        patientName.includes(searchTerm) ||
+                        patientNumber.includes(searchTerm) ||
+                        diagnosis.includes(searchTerm) ||
+                        doctor.includes(searchTerm) ||
+                        symptoms.includes(searchTerm)
+                    );
+
+                });
+
+
+            displayRecords(filteredRecords);
+        }
+
+
+        // ---------------------------------------------------------
+        // FORMAT DATE
+        // ---------------------------------------------------------
+        function formatDate(dateValue) {
+
+            if (!dateValue) {
+                return '';
+            }
+
+            try {
+
+                const date =
+                    new Date(dateValue);
+
+                if (isNaN(date.getTime())) {
+
+                    return escapeHtml(
+                        String(dateValue)
+                    );
+                }
+
+                return date.toLocaleDateString(
+                    'en-GB',
+                    {
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric'
+                    }
+                );
+
+            }
+
+            catch (error) {
+
+                return escapeHtml(
+                    String(dateValue)
+                );
+            }
+        }
+
+
+        // ---------------------------------------------------------
+        // SECURITY: ESCAPE HTML
+        // ---------------------------------------------------------
+        function escapeHtml(value) {
+
+            if (
+                value === null ||
+                value === undefined
+            ) {
+                return '';
+            }
+
+            return String(value)
+                .replace(
+                    /&/g,
+                    '&amp;'
+                )
+                .replace(
+                    /</g,
+                    '&lt;'
+                )
+                .replace(
+                    />/g,
+                    '&gt;'
+                )
+                .replace(
+                    /"/g,
+                    '&quot;'
+                )
+                .replace(
+                    /'/g,
+                    '&#039;'
+                );
+        }
+
+
+        // ---------------------------------------------------------
+        // LOAD PAGE
+        // ---------------------------------------------------------
+        document.addEventListener(
+            'DOMContentLoaded',
+            function () {
+                loadMedicalRecords();
+            }
+        );
+
+    </script>
+    ```
+
+</body>
+
+</html>

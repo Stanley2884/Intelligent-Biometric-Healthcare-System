@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Risk Prediction - BioHealth AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .topbar {
+            background: #123c69;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            opacity: 0.85;
+            margin-top: 4px;
+        }
+
+        .status {
+            background: #198754;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .navigation {
+            background: white;
+            padding: 14px 25px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .navigation a {
+            text-decoration: none;
+            color: #123c69;
+            padding: 9px 13px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .navigation a:hover {
+            background: #eaf2f8;
+        }
+
+        .navigation .active {
+            background: #123c69;
+            color: white;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            font-size: 30px;
+            color: #123c69;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #6b7280;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-title {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 30px;
+            font-weight: bold;
+            color: #123c69;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .card h2 {
+            color: #123c69;
+            margin-bottom: 8px;
+            font-size: 21px;
+        }
+
+        .card-description {
+            color: #6b7280;
+            margin-bottom: 22px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd3dc;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #123c69;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .symptoms {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 8px;
+        }
+
+        .symptom-btn {
+            border: 1px solid #b9c4d0;
+            background: #f8fafc;
+            color: #374151;
+            padding: 9px 13px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .symptom-btn:hover {
+            background: #eaf2f8;
+        }
+
+        .symptom-btn.selected {
+            background: #123c69;
+            color: white;
+            border-color: #123c69;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #123c69;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .submit-btn:hover {
+            background: #0d3156;
+        }
+
+        .submit-btn:disabled {
+            background: #8a9aaa;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            font-size: 14px;
+        }
+
+        .message.success {
+            display: block;
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .message.error {
+            display: block;
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .result-box {
+            border: 1px solid #dbe2ea;
+            border-radius: 8px;
+            padding: 20px;
+            background: #f9fbfd;
+        }
+
+        .waiting {
+            text-align: center;
+            padding: 45px 15px;
+            color: #6b7280;
+        }
+
+        .waiting-icon {
+            font-size: 38px;
+            margin-bottom: 12px;
+        }
+
+        .result-content {
+            display: none;
+        }
+
+        .result-header {
+            padding: 18px;
+            border-radius: 8px;
+            background: #eaf2f8;
+            margin-bottom: 18px;
+        }
+
+        .result-header h3 {
+            color: #123c69;
+            margin-bottom: 6px;
+        }
+
+        .result-header p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .result-item {
+            background: white;
+            border: 1px solid #e0e6ed;
+            padding: 15px;
+            border-radius: 7px;
+        }
+
+        .result-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .result-value {
+            font-size: 17px;
+            font-weight: bold;
+            color: #123c69;
+        }
+
+        .recommendation {
+            background: #fff8e1;
+            border-left: 4px solid #d39e00;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 18px;
+        }
+
+        .recommendation strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .factors {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .factor {
+            background: white;
+            border: 1px solid #e0e6ed;
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .factor-title {
+            display: block;
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .factor-value {
+            font-weight: bold;
+            color: #123c69;
+        }
+
+        .risk-high {
+            color: #b42318 !important;
+        }
+
+        .risk-moderate {
+            color: #b54708 !important;
+        }
+
+        .risk-low {
+            color: #027a48 !important;
+        }
+
+        .history-card {
+            margin-top: 25px;
+        }
+
+        .history-item {
+            border-bottom: 1px solid #e5e7eb;
+            padding: 15px 0;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-name {
+            font-weight: bold;
+            color: #123c69;
+        }
+
+        .history-details {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .empty-history {
+            text-align: center;
+            padding: 25px;
+            color: #6b7280;
+        }
+
+        .disclaimer {
+            background: #fff3cd;
+            border: 1px solid #ffecb5;
+            color: #664d03;
+            padding: 16px;
+            border-radius: 7px;
+            margin-top: 20px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .loading {
+            text-align: center;
+            color: #6b7280;
+            padding: 15px;
+        }
+
+        @media (max-width: 900px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .result-grid,
+            .factors {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="topbar">
+        <div>
+            <div class="brand">BioHealth AI</div>
+            <div class="subtitle">Intelligent Healthcare System</div>
+        </div>
+
+        <div class="status">● AI ENGINE READY</div>
+    </div>
+
+    <div class="navigation">
+        <a href="/dashboard.html">Dashboard</a>
+        <a href="/patient_registration.html">Patient Registration</a>
+        <a href="/patients.html">Patient Directory</a>
+        <a href="/biometric.html">Biometric Identification</a>
+        <a href="/medical_records.html">Medical Records</a>
+        <a href="/appointments.html">Appointments</a>
+        <a href="/ai_prediction.html" class="active">AI Risk Prediction</a>
+        <a href="/reports.html">Reports</a>
+        <a href="/users.html">Users</a>
+        <a href="/settings.html">Settings</a>
+    </div>
+
+    <div class="container">
+
+        <div class="page-title">
+            <h1>AI Risk Prediction</h1>
+            <p>AI-assisted disease risk assessment and clinical decision support</p>
+        </div>
+
+        <div class="stats">
+
+            <div class="stat-card">
+                <div class="stat-title">AI Assessments</div>
+                <div class="stat-value" id="totalAssessments">--</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-title">High Risk Cases</div>
+                <div class="stat-value" id="highRiskCases">--</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-title">Average Confidence</div>
+                <div class="stat-value" id="averageConfidence">--</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-title">Today's Predictions</div>
+                <div class="stat-value" id="todayPredictions">--</div>
+            </div>
+
+        </div>
+
+        <div class="main-grid">
+
+            <!-- PATIENT ASSESSMENT FORM -->
+
+            <div class="card">
+
+                <h2>Patient Risk Assessment</h2>
+
+                <div class="card-description">
+                    Enter patient information and symptoms for an AI-assisted risk assessment.
+                </div>
+
+                <div id="message" class="message"></div>
+
+                <form id="predictionForm">
+
+                    <div class="form-group">
+                        <label for="patientNumber">Patient Number</label>
+                        <input type="text" id="patientNumber" placeholder="Example: P001" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="patientAge">Patient Age</label>
+                        <input type="number" id="patientAge" min="0" max="120" placeholder="Enter patient age" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+
+                        <select id="gender" required>
+
+                            <option value="">Select gender</option>
+
+                            <option value="Male">
+                                Male
+                            </option>
+
+                            <option value="Female">
+                                Female
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="history">
+                            Previous Medical History
+                        </label>
+
+                        <textarea id="history"
+                            placeholder="Example: None, diabetes, hypertension, asthma..."></textarea>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="symptoms">
+                            Patient Symptoms
+                        </label>
+
+                        <textarea id="symptoms"
+                            placeholder="Select symptoms below or type symptoms manually..."></textarea>
+
+                        <div class="symptoms">
+
+                            <button type="button" class="symptom-btn" data-symptom="Fever">
+                                Fever
+                            </button>
+
+                            <button type="button" class="symptom-btn" data-symptom="Headache">
+                                Headache
+                            </button>
+
+                            <button type="button" class="symptom-btn" data-symptom="Cough">
+                                Cough
+                            </button>
+
+                            <button type="button" class="symptom-btn" data-symptom="Fatigue">
+                                Fatigue
+                            </button>
+
+                            <button type="button" class="symptom-btn" data-symptom="Nausea">
+                                Nausea
+                            </button>
+
+                            <button type="button" class="symptom-btn" data-symptom="Body pain">
+                                Body pain
+                            </button>
+
+                            <button type="button" class="symptom-btn" data-symptom="Chest pain">
+                                Chest pain
+                            </button>
+
+                            <button type="button" class="symptom-btn" data-symptom="Shortness of breath">
+                                Shortness of breath
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        Run AI Risk Assessment
+                    </button>
+
+                </form>
+
+                <div class="disclaimer">
+
+                    <strong>Important:</strong>
+
+                    This system provides an AI-assisted risk assessment for clinical
+                    decision-support purposes. It is a prototype and does not provide
+                    an independent medical diagnosis. Results should be reviewed by
+                    a qualified healthcare professional and must not replace professional
+                    diagnosis or treatment.
+
+                </div>
+
+            </div>
+
+
+            <!-- RESULT -->
+
+            <div class="card">
+
+                <h2>AI Assessment Result</h2>
+
+                <div class="card-description">
+                    Assessment results will appear here after processing.
+                </div>
+
+                <div class="result-box">
+
+                    <div class="waiting" id="waitingMessage">
+
+                        <div class="waiting-icon">
+                            ⏳
+                        </div>
+
+                        <strong>
+                            WAITING FOR ASSESSMENT
+                        </strong>
+
+                        <p style="margin-top:8px;">
+                            No assessment yet
+                        </p>
+
+                    </div>
+
+
+                    <div class="result-content" id="resultContent">
+
+                        <div class="result-header">
+
+                            <h3 id="resultDisease">
+                                --
+                            </h3>
+
+                            <p id="resultPatient">
+                                --
+                            </p>
+
+                        </div>
+
+
+                        <div class="result-grid">
+
+                            <div class="result-item">
+
+                                <div class="result-label">
+                                    Risk Level
+                                </div>
+
+                                <div class="result-value" id="resultRisk">
+                                    --
+                                </div>
+
+                            </div>
+
+
+                            <div class="result-item">
+
+                                <div class="result-label">
+                                    AI Confidence
+                                </div>
+
+                                <div class="result-value" id="resultConfidence">
+                                    --
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="recommendation">
+
+                            <strong>
+                                Recommendation:
+                            </strong>
+
+                            <span id="resultRecommendation">
+                                Run an assessment to receive a recommendation.
+                            </span>
+
+                        </div>
+
+
+                        <div class="factors">
+
+                            <div class="factor">
+
+                                <span class="factor-title">
+                                    Symptom Factors
+                                </span>
+
+                                <span class="factor-value" id="symptomFactor">
+                                    --
+                                </span>
+
+                            </div>
+
+
+                            <div class="factor">
+
+                                <span class="factor-title">
+                                    Medical History
+                                </span>
+
+                                <span class="factor-value" id="historyFactor">
+                                    --
+                                </span>
+
+                            </div>
+
+
+                            <div class="factor">
+
+                                <span class="factor-title">
+                                    Demographic Factors
+                                </span>
+
+                                <span class="factor-value" id="demographicFactor">
+                                    --
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div style="margin-top:18px; font-size:13px; color:#6b7280;">
+
+                            <strong>
+                                Assessment Time:
+                            </strong>
+
+                            <span id="assessmentTime">
+                                --
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECENT HISTORY -->
+
+        <div class="card history-card">
+
+            <h2>
+                Recent AI Assessments
+            </h2>
+
+            <div class="card-description">
+                Latest assessments recorded in the system.
+            </div>
+
+            <div id="historyList">
+
+                <div class="empty-history">
+                    Loading assessment history...
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // =========================================================
+        // DISPLAY MESSAGE
+        // =========================================================
+
+        function showMessage(message, type) {
+
+            const box =
+                document.getElementById("message");
+
+            box.textContent = message;
+
+            box.className =
+                "message " + type;
+
+            box.style.display = "block";
+        }
+
+
+        function hideMessage() {
+
+            const box =
+                document.getElementById("message");
+
+            box.style.display = "none";
+        }
+
+
+        // =========================================================
+        // SYMPTOM BUTTONS
+        // =========================================================
+
+        document
+            .querySelectorAll(".symptom-btn")
+            .forEach(button => {
+
+                button.addEventListener("click", function () {
+
+                    this.classList.toggle("selected");
+
+                    updateSymptoms();
+
+                });
+
+            });
+
+
+        function updateSymptoms() {
+
+            const selected = [];
+
+            document
+                .querySelectorAll(".symptom-btn.selected")
+                .forEach(button => {
+
+                    selected.push(
+                        button.dataset.symptom
+                    );
+
+                });
+
+            document.getElementById("symptoms").value =
+                selected.join(", ");
+
+        }
+
+
+        // =========================================================
+        // LOAD AI STATISTICS
+        // =========================================================
+
+        async function loadStats() {
+
+            try {
+
+                const response =
+                    await fetch("/ai-prediction-stats");
+
+                const data =
+                    await response.json();
+
+                if (response.ok && data.success) {
+
+                    const stats =
+                        data.stats || {};
+
+                    document.getElementById(
+                        "totalAssessments"
+                    ).textContent =
+                        stats.total_assessments ?? 0;
+
+                    document.getElementById(
+                        "highRiskCases"
+                    ).textContent =
+                        stats.high_risk_cases ?? 0;
+
+                    document.getElementById(
+                        "averageConfidence"
+                    ).textContent =
+                        (stats.average_confidence ?? 0) + "%";
+
+                    document.getElementById(
+                        "todayPredictions"
+                    ).textContent =
+                        stats.today_predictions ?? 0;
+
+                } else {
+
+                    console.log(
+                        "AI statistics response:",
+                        data
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Could not load AI statistics:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        // =========================================================
+        // LOAD PREDICTION HISTORY
+        // =========================================================
+
+        async function loadHistory() {
+
+            const historyList =
+                document.getElementById("historyList");
+
+            try {
+
+                const response =
+                    await fetch("/ai-prediction-history");
+
+                const data =
+                    await response.json();
+
+                historyList.innerHTML = "";
+
+                if (
+                    !response.ok ||
+                    !data.success ||
+                    !Array.isArray(data.history) ||
+                    data.history.length === 0
+                ) {
+
+                    historyList.innerHTML =
+                        '<div class="empty-history">No assessments yet.</div>';
+
+                    return;
+                }
+
+
+                data.history.forEach(item => {
+
+                    const div =
+                        document.createElement("div");
+
+                    div.className =
+                        "history-item";
+
+
+                    const name =
+                        item.full_name ||
+                        item.Full_name ||
+                        "Unknown Patient";
+
+                    const patientNumber =
+                        item.patient_number ||
+                        item.Patient_number ||
+                        "";
+
+                    const disease =
+                        item.disease ||
+                        item.prediction ||
+                        item.Prediction_disease ||
+                        "Unknown";
+
+                    const risk =
+                        item.risk_level ||
+                        item.Risk_level ||
+                        "Unknown";
+
+                    const confidence =
+                        item.confidence ??
+                        item.confidence_score ??
+                        item.Confidence_score ??
+                        0;
+
+                    const date =
+                        item.date ||
+                        item.prediction_date ||
+                        item.Prediction_date ||
+                        "";
+
+
+                    div.innerHTML = `
+
+                        <div class="history-name">
+
+                            ${escapeHtml(name)}
+
+                            -
+
+                            ${escapeHtml(patientNumber)}
+
+                        </div>
+
+                        <div class="history-details">
+
+                            ${escapeHtml(disease)}
+
+                            &nbsp; • &nbsp;
+
+                            ${escapeHtml(risk)}
+
+                            &nbsp; • &nbsp;
+
+                            Confidence:
+                            ${escapeHtml(String(confidence))}%
+
+                            &nbsp; • &nbsp;
+
+                            ${escapeHtml(String(date))}
+
+                        </div>
+
+                    `;
+
+                    historyList.appendChild(div);
+
+                });
+
+
+            } catch (error) {
+
+                console.error(
+                    "Could not load history:",
+                    error
+                );
+
+                historyList.innerHTML =
+                    '<div class="empty-history">Unable to load assessment history.</div>';
+
+            }
+
+        }
+
+
+        // =========================================================
+        // SECURITY HELPER
+        // =========================================================
+
+        function escapeHtml(value) {
+
+            const div =
+                document.createElement("div");
+
+            div.textContent =
+                value ?? "";
+
+            return div.innerHTML;
+
+        }
+
+
+        // =========================================================
+        // DISPLAY AI RESULT
+        // =========================================================
+
+        function displayResult(prediction) {
+
+            document.getElementById(
+                "waitingMessage"
+            ).style.display = "none";
+
+
+            document.getElementById(
+                "resultContent"
+            ).style.display = "block";
+
+
+            const disease =
+                prediction.prediction ||
+                prediction.disease ||
+                prediction.Prediction_disease ||
+                "Unknown";
+
+
+            const patientName =
+                prediction.full_name ||
+                "Unknown Patient";
+
+
+            const patientNumber =
+                prediction.patient_number ||
+                "";
+
+
+            const riskLevel =
+                prediction.risk_level ||
+                "Unknown";
+
+
+            const confidence =
+                prediction.confidence ??
+                prediction.confidence_score ??
+                0;
+
+
+            const recommendation =
+                prediction.recommendation ||
+                "Please consult a qualified healthcare professional.";
+
+
+            const symptomFactor =
+                prediction.symptom_factor ||
+                prediction.symptom_score ||
+                "Not available";
+
+
+            const historyFactor =
+                prediction.history_factor ||
+                prediction.history_score ||
+                "Not available";
+
+
+            const demographicFactor =
+                prediction.demographic_factor ||
+                prediction.demographic_score ||
+                "Not available";
+
+
+            const assessmentTime =
+                prediction.assessment_time ||
+                new Date().toLocaleString();
+
+
+            document.getElementById(
+                "resultDisease"
+            ).textContent =
+                disease;
+
+
+            document.getElementById(
+                "resultPatient"
+            ).textContent =
+                patientName +
+                " - " +
+                patientNumber;
+
+
+            document.getElementById(
+                "resultRisk"
+            ).textContent =
+                riskLevel;
+
+
+            document.getElementById(
+                "resultConfidence"
+            ).textContent =
+                confidence + "%";
+
+
+            document.getElementById(
+                "resultRecommendation"
+            ).textContent =
+                recommendation;
+
+
+            document.getElementById(
+                "symptomFactor"
+            ).textContent =
+                symptomFactor;
+
+
+            document.getElementById(
+                "historyFactor"
+            ).textContent =
+                historyFactor;
+
+
+            document.getElementById(
+                "demographicFactor"
+            ).textContent =
+                demographicFactor;
+
+
+            document.getElementById(
+                "assessmentTime"
+            ).textContent =
+                assessmentTime;
+
+
+            const riskElement =
+                document.getElementById("resultRisk");
+
+
+            riskElement.className =
+                "result-value";
+
+
+            if (riskLevel === "High Risk") {
+
+                riskElement.classList.add(
+                    "risk-high"
+                );
+
+            } else if (
+                riskLevel === "Moderate Risk"
+            ) {
+
+                riskElement.classList.add(
+                    "risk-moderate"
+                );
+
+            } else {
+
+                riskElement.classList.add(
+                    "risk-low"
+                );
+
+            }
+
+        }
+
+
+        // =========================================================
+        // RUN AI PREDICTION
+        // =========================================================
+
+        document
+            .getElementById("predictionForm")
+            .addEventListener(
+                "submit",
+                async function (event) {
+
+                    event.preventDefault();
+
+
+                    hideMessage();
+
+
+                    const submitButton =
+                        document.getElementById(
+                            "submitBtn"
+                        );
+
+
+                    const patientNumber =
+                        document
+                            .getElementById(
+                                "patientNumber"
+                            )
+                            .value
+                            .trim();
+
+
+                    const age =
+                        document
+                            .getElementById(
+                                "patientAge"
+                            )
+                            .value
+                            .trim();
+
+
+                    const gender =
+                        document
+                            .getElementById(
+                                "gender"
+                            )
+                            .value;
+
+
+                    const history =
+                        document
+                            .getElementById(
+                                "history"
+                            )
+                            .value
+                            .trim();
+
+
+                    const symptoms =
+                        document
+                            .getElementById(
+                                "symptoms"
+                            )
+                            .value
+                            .trim();
+
+
+                    // -------------------------------
+                    // VALIDATION
+                    // -------------------------------
+
+                    if (!patientNumber) {
+
+                        showMessage(
+                            "Please enter the patient number.",
+                            "error"
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (!age) {
+
+                        showMessage(
+                            "Please enter the patient's age.",
+                            "error"
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (!gender) {
+
+                        showMessage(
+                            "Please select the patient's gender.",
+                            "error"
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (!symptoms) {
+
+                        showMessage(
+                            "Please enter or select at least one symptom.",
+                            "error"
+                        );
+
+                        return;
+
+                    }
+
+
+                    // -------------------------------
+                    // START PROCESSING
+                    // -------------------------------
+
+                    submitButton.disabled = true;
+
+                    submitButton.textContent =
+                        "Processing AI Assessment...";
+
+
+                    try {
+
+                        const response =
+                            await fetch(
+                                "/ai-predict",
+                                {
+                                    method: "POST",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body:
+                                        JSON.stringify({
+
+                                            patient_number:
+                                                patientNumber,
+
+                                            age:
+                                                age,
+
+                                            gender:
+                                                gender,
+
+                                            history:
+                                                history,
+
+                                            medical_history:
+                                                history,
+
+                                            symptoms:
+                                                symptoms
+
+                                        })
+                                }
+                            );
+
+
+                        // -------------------------------
+                        // READ SERVER RESPONSE
+                        // -------------------------------
+
+                        const data =
+                            await response.json();
+
+
+                        console.log(
+                            "AI prediction response:",
+                            data
+                        );
+
+
+                        // -------------------------------
+                        // HANDLE ERROR
+                        // -------------------------------
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                data.message ||
+                                "AI assessment failed."
+                            );
+
+                        }
+
+
+                        if (
+                            data.status !== "success" &&
+                            data.success !== true
+                        ) {
+
+                            throw new Error(
+                                data.message ||
+                                "AI assessment was not completed."
+                            );
+
+                        }
+
+
+                        // -------------------------------
+                        // DISPLAY RESULT
+                        // -------------------------------
+
+                        displayResult(data);
+
+
+                        showMessage(
+                            "AI assessment completed and saved successfully.",
+                            "success"
+                        );
+
+
+                        // -------------------------------
+                        // REFRESH STATISTICS
+                        // -------------------------------
+
+                        await loadStats();
+
+
+                        // -------------------------------
+                        // REFRESH HISTORY
+                        // -------------------------------
+
+                        await loadHistory();
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "AI assessment error:",
+                            error
+                        );
+
+
+                        showMessage(
+                            error.message ||
+                            "Unable to complete the AI assessment.",
+                            "error"
+                        );
+
+
+                    } finally {
+
+                        submitButton.disabled =
+                            false;
+
+
+                        submitButton.textContent =
+                            "Run AI Risk Assessment";
+
+                    }
+
+                }
+            );
+
+
+        // =========================================================
+        // INITIAL PAGE LOAD
+        // =========================================================
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                loadStats();
+
+                loadHistory();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
