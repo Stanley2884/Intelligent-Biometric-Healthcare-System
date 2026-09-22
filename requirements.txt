@@ -1,5 +1,6 @@
-flask
+Flask
 flask-mysqldb
+mysql-connector-python
 deepface
 tensorflow
 scikit-learn
@@ -7,3 +8,9 @@ opencv-python
 numpy
 pillow
 python-dotenv
+gunicorn
+Werkzeug
+Jinja2
+itsdangerous
+click
+blinker
